@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/articles",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Cleaning Guides for Los Angeles Homes | Extreme Quality Clean",
+      "hasCanvas": false,
+      "bodyTextLen": 3989,
+      "bodyTextHash": "861ebfed9d4243cba12a2f71d627131da9c9d11575179f95cf088dec9467ea50",
+      "bodyTextPrefix": "The Turnover·Quoted first Book it (818) 294-3141 SHERMAN OAKS · ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/articles-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Cleaning Guides for Los Angeles Homes | Extreme Quality Clean",
+      "hasCanvas": false,
+      "bodyTextLen": 3788,
+      "bodyTextHash": "fcdd61a6d0aecd1376c463f1a4974fa7a1ad120e7c688a11a217269eebf05858",
+      "bodyTextPrefix": "Book a turnover GUIDES How Los Angeles homes actually get clean.",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/articles-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/articles-preview.json"
+}

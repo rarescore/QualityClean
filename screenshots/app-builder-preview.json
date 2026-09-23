@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Extreme Quality Clean | Airbnb & Home Cleaning Los Angeles",
+      "hasCanvas": false,
+      "bodyTextLen": 10033,
+      "bodyTextHash": "8ad894e8444301c620660a61629bcf9923dbe8e74945cb255a69126548d2a82d",
+      "bodyTextPrefix": "Skip to content SHERMAN OAKS · GREATER LOS ANGELES · 25+ YEARS 8",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Extreme Quality Clean | Airbnb & Home Cleaning Los Angeles",
+      "hasCanvas": false,
+      "bodyTextLen": 9888,
+      "bodyTextHash": "16a215e60f4ed7f510739c3987e37082ef63eb13abc9a09dab32e91308c8cc1c",
+      "bodyTextPrefix": "Skip to content Book a turnover LOS ANGELES · AIRBNB TURNOVERS C",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

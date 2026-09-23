@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#171834"/>
+  <g transform="translate(16,16)">
+    <g transform="rotate(-38) scale(0.92) translate(-12,-12)">
+      <path fill="#C43B36" d="M13 1.2 L3.2 13.4 H11.6 L10.4 22.8 L20.8 10.6 H12.4 L13 1.2 Z"/>
+    </g>
+    <g transform="rotate(38) scale(0.92) translate(-12,-12)">
+      <path fill="#C43B36" d="M13 1.2 L3.2 13.4 H11.6 L10.4 22.8 L20.8 10.6 H12.4 L13 1.2 Z"/>
+    </g>
+    <circle r="3.1" fill="#F4EFE6"/>
+  </g>
+</svg>
