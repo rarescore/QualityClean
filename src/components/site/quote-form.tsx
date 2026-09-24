@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,15 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { company } from "@/lib/company";
 import {
-  estimateRange,
   frequencyOptions,
   serviceOptions,
   type FrequencyId,
   type ServiceId,
 } from "@/lib/estimate";
+import { deliverQuote, quoteMessage, type QuoteInput } from "@/lib/quote-mail";
+import { submitQuote } from "@/lib/quote.functions";
 import { cn } from "@/lib/utils";
-
-const STORAGE_KEY = "eqc-quotes";
 
 type Props = {
   defaultService?: ServiceId;
@@ -41,42 +40,45 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
   const [listing, setListing] = useState("");
   const [notes, setNotes] = useState("");
   const [military, setMilitary] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState<"email" | "activate" | "mailto" | null>(null);
+  const [mailHref, setMailHref] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [honeypot, setHoneypot] = useState("");
 
-  const estimate = useMemo(
-    () => estimateRange({ service, beds, baths, frequency, sameDay }),
-    [service, beds, baths, frequency, sameDay],
-  );
+  useEffect(() => {
+    if (!error) return;
+    document.getElementById("quote-error")?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [error]);
 
-  const serviceLabel = serviceOptions.find((s) => s.id === service)?.label ?? service;
+  const closeThanks = useCallback(() => setSent(null), []);
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (honeypot.trim()) return;
+    if (honeypot.trim()) {
+      setSent("email");
+      return;
+    }
     if (busy) return;
 
     const nameOk = name.trim().length >= 2;
     const phoneOk = digits(phone).length >= 10;
     if (!nameOk || !phoneOk) {
-      const msg = "Name and a 10-digit phone number are required so we can quote you.";
-      setError(msg);
+      setError("Name and a 10-digit phone number are required so we can quote you.");
       return;
     }
     if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      const msg = "That email does not look valid.";
-      setError(msg);
+      setError("That email does not look valid.");
       return;
     }
 
     setError("");
     setBusy(true);
 
-    const payload = {
-      id: crypto.randomUUID(),
-      at: new Date().toISOString(),
+    const payload: QuoteInput = {
       name: name.trim(),
       email: email.trim(),
       phone: phone.trim(),
@@ -92,80 +94,57 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
       frequency,
       sameDay,
       military,
-      estimateNote: estimate.note,
     };
 
-    try {
-      const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as unknown[];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([payload, ...prev].slice(0, 25)));
-    } catch {
-      /* ignore quota */
+    const mail = quoteMessage(payload);
+    const href = `mailto:${company.quotesEmail}?subject=${encodeURIComponent(
+      mail.subject,
+    )}&body=${encodeURIComponent(`${mail.text}\n\nSent from extremequalityclean.com/quote`)}`;
+    setMailHref(href);
+
+    const direct = await deliverQuote(payload);
+    if (direct === "sent") {
+      setSent("email");
+      setBusy(false);
+      return;
+    }
+    if (direct === "queued") {
+      setSent("activate");
+      setBusy(false);
+      return;
     }
 
-    const lines = [
-      `Quote request — ${serviceLabel}`,
-      `Name: ${payload.name}`,
-      `Phone: ${payload.phone}`,
-      payload.email ? `Email: ${payload.email}` : null,
-      payload.neighborhood ? `Neighborhood: ${payload.neighborhood}` : null,
-      `Bedrooms: ${beds} · Bathrooms: ${baths} · Cadence: ${frequency}`,
-      payload.date ? `Preferred date: ${payload.date}` : null,
-      service === "airbnb"
-        ? `Check-out ${checkout} / Check-in ${checkin}${payload.listing ? ` · ${payload.listing}` : ""}`
-        : null,
-      sameDay ? "Same-day if possible" : null,
-      military ? "Senior / military discount requested" : null,
-      payload.notes ? `Notes: ${payload.notes}` : null,
-      "",
-      "Sent from extremequalityclean.com/quote",
-    ].filter(Boolean);
+    try {
+      const result = await Promise.race([
+        submitQuote({ data: { ...payload, honeypot: "" } }),
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), 9000)),
+      ]);
+      if (result?.ok) {
+        setSent(result.delivery === "queued" ? "activate" : "email");
+        setBusy(false);
+        return;
+      }
+    } catch {
+      /* show the on-page email link below */
+    }
 
-    const mailto = `mailto:${company.email}?subject=${encodeURIComponent(
-      `Quote request — ${serviceLabel} — ${payload.name}`,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-
-    window.location.href = mailto;
-    setSent(true);
+    setSent("mailto");
     setBusy(false);
   }
 
-  if (sent) {
-    return (
-      <div className="rounded-xl bg-navy p-8 text-cream md:p-10" role="status">
-        <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-red">
-          <Check className="size-6" aria-hidden />
-        </div>
-        <h3 className="font-display text-3xl">Open the message, or call.</h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-cream/85">
-          Thank you, {name.split(" ")[0]}. Your email app should open a message
-          to {company.email}. If nothing opened, call us — we pick up 24/7. We
-          do not confirm a price until a coordinator has the rooms.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Button asChild variant="cream">
-            <a href={`tel:${company.phoneTel}`}>Call {company.phoneDisplay}</a>
-          </Button>
-          <Button asChild variant="invert">
-            <a href={`mailto:${company.email}`}>Email {company.email}</a>
-          </Button>
-          <Button
-            type="button"
-            variant="invert"
-            onClick={() => {
-              setSent(false);
-              setNotes("");
-              setError("");
-            }}
-          >
-            Edit and resend
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const first = name.split(" ")[0];
 
   return (
-    <form onSubmit={onSubmit} className="relative grid gap-6" noValidate>
+    <>
+      {sent ? (
+        <ThankYouDialog
+          first={first}
+          kind={sent}
+          mailHref={mailHref}
+          onClose={closeThanks}
+        />
+      ) : null}
+      <form onSubmit={onSubmit} className="relative grid gap-6" noValidate>
       <div
         className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden"
         aria-hidden
@@ -180,12 +159,6 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
           onChange={(e) => setHoneypot(e.target.value)}
         />
       </div>
-
-      {error ? (
-        <p id="quote-error" role="alert" className="text-sm text-red">
-          {error}
-        </p>
-      ) : null}
 
       <div
         className={cn(
@@ -404,11 +377,16 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
             </p>
             <p className="mt-4 text-sm leading-relaxed text-cream/85">
               Tell us the property and the window. You get the number in writing
-              before a crew is booked — no surprise add-ons at the door. Submitting
-              opens an email to us; if it doesn’t, call.
+              before a crew is booked — no surprise add-ons at the door. This
+              request is emailed straight to our office.
             </p>
           </div>
           <div className="mt-8 space-y-3">
+            {error ? (
+              <p id="quote-error" role="alert" className="text-sm font-medium text-cream">
+                {error}
+              </p>
+            ) : null}
             <Button
               type="submit"
               variant="primary"
@@ -417,7 +395,7 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
               disabled={busy}
               aria-busy={busy}
             >
-              {busy ? "Opening email…" : "Request this quote"}
+              {busy ? "Sending…" : "Request this quote"}
             </Button>
             <a
               href={`tel:${company.phoneTel}`}
@@ -429,5 +407,85 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
         </aside>
       </div>
     </form>
+    </>
+  );
+}
+
+function ThankYouDialog({
+  first,
+  kind,
+  mailHref,
+  onClose,
+}: {
+  first: string;
+  kind: "email" | "activate" | "mailto";
+  mailHref: string;
+  onClose: () => void;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const sent = kind !== "mailto";
+
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    panelRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[80] flex items-end justify-center p-4 sm:items-center">
+      <button
+        type="button"
+        className="absolute inset-0 bg-navy/70"
+        aria-label="Close thank you message"
+        onClick={onClose}
+      />
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quote-thanks-title"
+        className="relative w-full max-w-md rounded-xl bg-navy p-8 text-cream shadow-card outline-none"
+      >
+        <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-red">
+          <Check className="size-6" aria-hidden />
+        </div>
+        <h3 id="quote-thanks-title" className="font-display text-4xl leading-none">
+          {sent ? "Thank you." : "One more step."}
+        </h3>
+        <p className="mt-4 text-sm leading-relaxed text-cream/85">
+          {sent
+            ? `Thank you, ${first || "there"}. Your request was sent. We’ll call or email you. We do not confirm a price until we’ve seen the rooms.`
+            : `Thank you, ${first || "there"}. This did not send on its own. Click below and send the message that opens so the office gets it.`}
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          {sent ? (
+            <Button type="button" variant="cream" onClick={onClose}>
+              Done
+            </Button>
+          ) : (
+            <Button asChild variant="cream">
+              <a href={mailHref}>Email this request</a>
+            </Button>
+          )}
+          <Button asChild variant="invert">
+            <a href={`tel:${company.phoneTel}`}>Call {company.phoneDisplay}</a>
+          </Button>
+          {!sent ? (
+            <Button type="button" variant="invert" onClick={onClose}>
+              Close
+            </Button>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ export const company = {
   phoneDisplay: "(818) 294-3141",
   phoneTel: "+18182943141",
   email: "info@extremequalityclean.com",
+  quotesEmail: "extremequalitycleaninc@gmail.com",
   siteUrl: "https://www.extremequalityclean.com",
   address: {
     line1: "15130 Ventura Blvd",

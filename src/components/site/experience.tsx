@@ -8,64 +8,9 @@ import { cn } from "@/lib/utils";
 export function SiteExperience() {
   return (
     <>
-      <CraftCursor />
       <ScrollProgress />
       <StickyBook />
       <div className="film-grain" aria-hidden />
-    </>
-  );
-}
-
-function CraftCursor() {
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduce || navigator.webdriver) return;
-
-    document.documentElement.classList.add("cursor-craft");
-    const d = dot.current;
-    const r = ring.current;
-    if (!d || !r) return;
-
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
-    let rx = x;
-    let ry = y;
-    let hover = false;
-    let raf = 0;
-
-    const move = (e: MouseEvent) => {
-      x = e.clientX;
-      y = e.clientY;
-      const t = e.target;
-      hover = t instanceof Element && Boolean(t.closest("a, button, [role='button']"));
-    };
-
-    const loop = () => {
-      rx += (x - rx) * 0.16;
-      ry += (y - ry) * 0.16;
-      d.style.transform = `translate(${x}px, ${y}px)`;
-      r.style.transform = `translate(${rx}px, ${ry}px) scale(${hover ? 2.1 : 1})`;
-      r.style.opacity = hover ? "0.35" : "1";
-      raf = requestAnimationFrame(loop);
-    };
-
-    window.addEventListener("mousemove", move, { passive: true });
-    raf = requestAnimationFrame(loop);
-    return () => {
-      document.documentElement.classList.remove("cursor-craft");
-      window.removeEventListener("mousemove", move);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  return (
-    <>
-      <div ref={ring} className="craft-cursor-ring" aria-hidden />
-      <div ref={dot} className="craft-cursor-dot" aria-hidden />
     </>
   );
 }

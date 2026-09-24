@@ -212,50 +212,6 @@
   }
 }
 
-.craft-cursor-dot,
-.craft-cursor-ring {
-  display: none;
-}
-
-@media (pointer: fine) {
-  .cursor-craft,
-  .cursor-craft body,
-  .cursor-craft a,
-  .cursor-craft button,
-  .cursor-craft [role="button"] {
-    cursor: none;
-  }
-  .cursor-craft input,
-  .cursor-craft textarea,
-  .cursor-craft select {
-    cursor: text;
-  }
-  .craft-cursor-dot,
-  .craft-cursor-ring {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 85;
-    pointer-events: none;
-    border-radius: 999px;
-    will-change: transform;
-  }
-  .craft-cursor-dot {
-    width: 6px;
-    height: 6px;
-    margin: -3px 0 0 -3px;
-    background: var(--color-red);
-  }
-  .craft-cursor-ring {
-    width: 36px;
-    height: 36px;
-    margin: -18px 0 0 -18px;
-    border: 1px solid rgb(196 59 54 / 0.7);
-    transition: opacity 0.18s, width 0.18s;
-  }
-}
-
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -389,9 +345,7 @@
   .cinematic-video {
     display: none;
   }
-  .film-grain,
-  .craft-cursor-dot,
-  .craft-cursor-ring {
+  .film-grain {
     display: none !important;
   }
 }
