@@ -13,7 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AirbnbRouteImport } from './routes/airbnb'
+import { Route as CleaningServicesEncinoRouteImport } from './routes/cleaning-services-encino'
+import { Route as CleaningServicesStudioCityRouteImport } from './routes/cleaning-services-studio-city'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as HouseCleaningShermanOaksRouteImport } from './routes/house-cleaning-sherman-oaks'
+import { Route as HouseCleaningVanNuysRouteImport } from './routes/house-cleaning-van-nuys'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
@@ -39,9 +43,31 @@ const AirbnbRoute = AirbnbRouteImport.update({
   path: '/airbnb',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CleaningServicesEncinoRoute = CleaningServicesEncinoRouteImport.update({
+  id: '/cleaning-services-encino',
+  path: '/cleaning-services-encino',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CleaningServicesStudioCityRoute =
+  CleaningServicesStudioCityRouteImport.update({
+    id: '/cleaning-services-studio-city',
+    path: '/cleaning-services-studio-city',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HouseCleaningShermanOaksRoute =
+  HouseCleaningShermanOaksRouteImport.update({
+    id: '/house-cleaning-sherman-oaks',
+    path: '/house-cleaning-sherman-oaks',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const HouseCleaningVanNuysRoute = HouseCleaningVanNuysRouteImport.update({
+  id: '/house-cleaning-van-nuys',
+  path: '/house-cleaning-van-nuys',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuoteRoute = QuoteRouteImport.update({
@@ -70,7 +96,11 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/airbnb': typeof AirbnbRoute
+  '/cleaning-services-encino': typeof CleaningServicesEncinoRoute
+  '/cleaning-services-studio-city': typeof CleaningServicesStudioCityRoute
   '/contact': typeof ContactRoute
+  '/house-cleaning-sherman-oaks': typeof HouseCleaningShermanOaksRoute
+  '/house-cleaning-van-nuys': typeof HouseCleaningVanNuysRoute
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -81,7 +111,11 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/airbnb': typeof AirbnbRoute
+  '/cleaning-services-encino': typeof CleaningServicesEncinoRoute
+  '/cleaning-services-studio-city': typeof CleaningServicesStudioCityRoute
   '/contact': typeof ContactRoute
+  '/house-cleaning-sherman-oaks': typeof HouseCleaningShermanOaksRoute
+  '/house-cleaning-van-nuys': typeof HouseCleaningVanNuysRoute
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -93,7 +127,11 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/airbnb': typeof AirbnbRoute
+  '/cleaning-services-encino': typeof CleaningServicesEncinoRoute
+  '/cleaning-services-studio-city': typeof CleaningServicesStudioCityRoute
   '/contact': typeof ContactRoute
+  '/house-cleaning-sherman-oaks': typeof HouseCleaningShermanOaksRoute
+  '/house-cleaning-van-nuys': typeof HouseCleaningVanNuysRoute
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -106,7 +144,11 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/airbnb'
+    | '/cleaning-services-encino'
+    | '/cleaning-services-studio-city'
     | '/contact'
+    | '/house-cleaning-sherman-oaks'
+    | '/house-cleaning-van-nuys'
     | '/quote'
     | '/services'
     | '/articles/$slug'
@@ -117,7 +159,11 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/airbnb'
+    | '/cleaning-services-encino'
+    | '/cleaning-services-studio-city'
     | '/contact'
+    | '/house-cleaning-sherman-oaks'
+    | '/house-cleaning-van-nuys'
     | '/quote'
     | '/services'
     | '/articles/$slug'
@@ -128,7 +174,11 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/airbnb'
+    | '/cleaning-services-encino'
+    | '/cleaning-services-studio-city'
     | '/contact'
+    | '/house-cleaning-sherman-oaks'
+    | '/house-cleaning-van-nuys'
     | '/quote'
     | '/services'
     | '/articles/$slug'
@@ -140,7 +190,11 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   AirbnbRoute: typeof AirbnbRoute
+  CleaningServicesEncinoRoute: typeof CleaningServicesEncinoRoute
+  CleaningServicesStudioCityRoute: typeof CleaningServicesStudioCityRoute
   ContactRoute: typeof ContactRoute
+  HouseCleaningShermanOaksRoute: typeof HouseCleaningShermanOaksRoute
+  HouseCleaningVanNuysRoute: typeof HouseCleaningVanNuysRoute
   QuoteRoute: typeof QuoteRoute
   ServicesRoute: typeof ServicesRoute
   ArticlesSlugRoute: typeof ArticlesSlugRoute
@@ -177,11 +231,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AirbnbRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cleaning-services-encino': {
+      id: '/cleaning-services-encino'
+      path: '/cleaning-services-encino'
+      fullPath: '/cleaning-services-encino'
+      preLoaderRoute: typeof CleaningServicesEncinoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cleaning-services-studio-city': {
+      id: '/cleaning-services-studio-city'
+      path: '/cleaning-services-studio-city'
+      fullPath: '/cleaning-services-studio-city'
+      preLoaderRoute: typeof CleaningServicesStudioCityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/house-cleaning-sherman-oaks': {
+      id: '/house-cleaning-sherman-oaks'
+      path: '/house-cleaning-sherman-oaks'
+      fullPath: '/house-cleaning-sherman-oaks'
+      preLoaderRoute: typeof HouseCleaningShermanOaksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/house-cleaning-van-nuys': {
+      id: '/house-cleaning-van-nuys'
+      path: '/house-cleaning-van-nuys'
+      fullPath: '/house-cleaning-van-nuys'
+      preLoaderRoute: typeof HouseCleaningVanNuysRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quote': {
@@ -220,7 +302,11 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   AirbnbRoute: AirbnbRoute,
+  CleaningServicesEncinoRoute: CleaningServicesEncinoRoute,
+  CleaningServicesStudioCityRoute: CleaningServicesStudioCityRoute,
   ContactRoute: ContactRoute,
+  HouseCleaningShermanOaksRoute: HouseCleaningShermanOaksRoute,
+  HouseCleaningVanNuysRoute: HouseCleaningVanNuysRoute,
   QuoteRoute: QuoteRoute,
   ServicesRoute: ServicesRoute,
   ArticlesSlugRoute: ArticlesSlugRoute,

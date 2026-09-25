@@ -70,29 +70,30 @@ export function quoteMessage(input: QuoteInput) {
 }
 
 export async function deliverQuote(input: QuoteInput): Promise<QuoteDelivery> {
-  const { fields } = quoteMessage(input);
+  const { subject, text, fields } = quoteMessage(input);
   try {
-    const res = await fetch(
-      `https://formsubmit.co/ajax/${encodeURIComponent(company.quotesEmail)}`,
-      {
-        method: "POST",
-        signal: AbortSignal.timeout(8000),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(fields),
+    const res = await fetch("https://email.gosecureserver.in/api/send.php", {
+      method: "POST",
+      redirect: "manual",
+      signal: AbortSignal.timeout(12000),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-    );
-    const body = (await res.json().catch(() => null)) as {
-      success?: boolean | string;
-      message?: string;
-    } | null;
-    const message = body?.message ?? "";
-    const success = body?.success === true || body?.success === "true";
-    if (success) return "sent";
-    if (/activat/i.test(message)) return "queued";
-    if (res.status === 429 || /rate limit/i.test(message)) return "limited";
+      body: JSON.stringify({
+        to: company.quotesEmail,
+        subject,
+        name: input.name,
+        email: input.email || company.quotesEmail,
+        phone: input.phone,
+        service: fields.service,
+        message: text,
+        hp_email: "",
+      }),
+    });
+    const location = res.headers.get("location") ?? "";
+    if ((res.status === 302 || res.status === 303) && /thank/i.test(location)) return "sent";
+    if (res.ok) return "sent";
     return "failed";
   } catch {
     return "failed";

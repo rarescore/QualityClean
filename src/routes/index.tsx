@@ -25,6 +25,7 @@ import {
   versus,
   hostFails,
 } from "@/lib/company";
+import { locations } from "@/lib/locations";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -440,6 +441,33 @@ function Home() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-cream py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <Eyebrow>Neighborhoods</Eyebrow>
+          <h2 className="display-section max-w-3xl">
+            The Valley streets we actually drive.
+          </h2>
+          <p className="mt-4 max-w-xl text-muted">
+            Four different housing stocks. The office stays on Ventura Blvd in
+            Sherman Oaks.
+          </p>
+          <ul className="mt-12 grid gap-8 md:grid-cols-2">
+            {locations.map((location) => (
+              <li key={location.path}>
+                <Link to={location.path} className="group block">
+                  <span className="font-display text-3xl group-hover:text-red">
+                    {location.h1}
+                  </span>
+                  <span className="mt-2 block max-w-md text-sm leading-relaxed text-muted">
+                    {location.lede}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { company, nav, areas } from "@/lib/company";
+import { company, nav } from "@/lib/company";
+import { locations } from "@/lib/locations";
 import { latestArticles } from "@/lib/article-meta";
 import { Sparkle, LogoMark } from "@/components/site/marks";
 import { SocialLinks } from "@/components/site/social-links";
@@ -112,8 +113,16 @@ export function SiteFooter() {
           <p>
             © {new Date().getFullYear()} {company.legal}. All rights reserved.
           </p>
-          <p className="max-w-md sm:text-right">
-            {areas.slice(0, 8).join(" · ")} · and greater L.A.
+          <p className="max-w-xl sm:text-right">
+            {locations.map((location, index) => (
+              <span key={location.path}>
+                {index > 0 ? " · " : null}
+                <Link to={location.path} className="hover:text-cream">
+                  {location.city}
+                </Link>
+              </span>
+            ))}
+            <span> · and greater L.A.</span>
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Eyebrow } from "@/components/site/marks";
 import { QuoteForm } from "@/components/site/quote-form";
 import { SocialLinks } from "@/components/site/social-links";
 import { areas, company } from "@/lib/company";
+import { locations } from "@/lib/locations";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
@@ -107,7 +108,8 @@ function ContactPage() {
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
               Sherman Oaks base. We drive Van Nuys, Encino, Studio City, North
               Hollywood, Reseda, and the rest of greater Los Angeles. Statewide
-              work is quoted case by case.
+              work is quoted case by case. An older Google listing may still
+              show 6829 Murietta Ave, Van Nuys. That is not the current office.
             </p>
             <div className="mt-6">
               <Button asChild variant="outline">
@@ -136,14 +138,25 @@ function ContactPage() {
             carpet, and glass.
           </p>
           <ul className="mt-10 flex flex-wrap gap-2">
-            {areas.map((a) => (
-              <li
-                key={a}
-                className="rounded-full border border-line bg-paper px-3 py-1.5 text-sm"
-              >
-                {a}
-              </li>
-            ))}
+            {areas.map((a) => {
+              const page = locations.find((location) => location.city === a);
+              return (
+                <li key={a}>
+                  {page ? (
+                    <Link
+                      to={page.path}
+                      className="inline-block rounded-full border border-line bg-paper px-3 py-1.5 text-sm underline decoration-transparent underline-offset-2 hover:decoration-ink"
+                    >
+                      {a}
+                    </Link>
+                  ) : (
+                    <span className="inline-block rounded-full border border-line bg-paper px-3 py-1.5 text-sm">
+                      {a}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </section>

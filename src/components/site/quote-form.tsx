@@ -11,7 +11,7 @@ import {
   type FrequencyId,
   type ServiceId,
 } from "@/lib/estimate";
-import { deliverQuote, quoteMessage, type QuoteInput } from "@/lib/quote-mail";
+import { quoteMessage, type QuoteInput } from "@/lib/quote-mail";
 import { submitQuote } from "@/lib/quote.functions";
 import { cn } from "@/lib/utils";
 
@@ -102,25 +102,13 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
     )}&body=${encodeURIComponent(`${mail.text}\n\nSent from extremequalityclean.com/quote`)}`;
     setMailHref(href);
 
-    const direct = await deliverQuote(payload);
-    if (direct === "sent") {
-      setSent("email");
-      setBusy(false);
-      return;
-    }
-    if (direct === "queued") {
-      setSent("activate");
-      setBusy(false);
-      return;
-    }
-
     try {
       const result = await Promise.race([
         submitQuote({ data: { ...payload, honeypot: "" } }),
-        new Promise<null>((resolve) => setTimeout(() => resolve(null), 9000)),
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), 14000)),
       ]);
       if (result?.ok) {
-        setSent(result.delivery === "queued" ? "activate" : "email");
+        setSent("email");
         setBusy(false);
         return;
       }

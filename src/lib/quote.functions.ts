@@ -68,5 +68,5 @@ export const submitQuote = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     if (!data.quote) return { ok: true as const, delivery: "sent" as const };
     const delivery = await deliverQuote(data.quote);
-    return { ok: delivery === "sent" || delivery === "queued", delivery };
+    return { ok: delivery === "sent", delivery };
   });
