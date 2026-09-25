@@ -25,6 +25,7 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml" },
       { rel: "icon", type: "image/png", href: "/logo.png", sizes: "48x48" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
