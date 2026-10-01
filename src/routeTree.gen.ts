@@ -22,6 +22,8 @@ import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
+import { Route as ServiceAreasIndexRouteImport } from './routes/service-areas/index'
+import { Route as ServiceAreasCityRouteImport } from './routes/service-areas/$city'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -90,6 +92,16 @@ const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   path: '/articles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiceAreasIndexRoute = ServiceAreasIndexRouteImport.update({
+  id: '/service-areas/',
+  path: '/service-areas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiceAreasCityRoute = ServiceAreasCityRouteImport.update({
+  id: '/service-areas/$city',
+  path: '/service-areas/$city',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,7 +116,9 @@ export interface FileRoutesByFullPath {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/service-areas/$city': typeof ServiceAreasCityRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/service-areas/': typeof ServiceAreasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -119,7 +133,9 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/service-areas/$city': typeof ServiceAreasCityRoute
   '/articles': typeof ArticlesIndexRoute
+  '/service-areas': typeof ServiceAreasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,7 +151,9 @@ export interface FileRoutesById {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/service-areas/$city': typeof ServiceAreasCityRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/service-areas/': typeof ServiceAreasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,7 +170,9 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/service-areas/$city'
     | '/articles/'
+    | '/service-areas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,7 +187,9 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/service-areas/$city'
     | '/articles'
+    | '/service-areas'
   id:
     | '__root__'
     | '/'
@@ -182,7 +204,9 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/service-areas/$city'
     | '/articles/'
+    | '/service-areas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -198,7 +222,9 @@ export interface RootRouteChildren {
   QuoteRoute: typeof QuoteRoute
   ServicesRoute: typeof ServicesRoute
   ArticlesSlugRoute: typeof ArticlesSlugRoute
+  ServiceAreasCityRoute: typeof ServiceAreasCityRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
+  ServiceAreasIndexRoute: typeof ServiceAreasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -294,6 +320,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/service-areas/': {
+      id: '/service-areas/'
+      path: '/service-areas'
+      fullPath: '/service-areas/'
+      preLoaderRoute: typeof ServiceAreasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/service-areas/$city': {
+      id: '/service-areas/$city'
+      path: '/service-areas/$city'
+      fullPath: '/service-areas/$city'
+      preLoaderRoute: typeof ServiceAreasCityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -310,7 +350,9 @@ const rootRouteChildren: RootRouteChildren = {
   QuoteRoute: QuoteRoute,
   ServicesRoute: ServicesRoute,
   ArticlesSlugRoute: ArticlesSlugRoute,
+  ServiceAreasCityRoute: ServiceAreasCityRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
+  ServiceAreasIndexRoute: ServiceAreasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

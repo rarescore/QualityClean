@@ -32,6 +32,7 @@ export const company = {
 export const nav = [
   { to: "/airbnb", label: "Airbnb hosts" },
   { to: "/services", label: "Services" },
+  { to: "/service-areas", label: "Service areas" },
   { to: "/articles", label: "Articles" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },

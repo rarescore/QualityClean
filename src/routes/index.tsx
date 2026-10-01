@@ -25,7 +25,7 @@ import {
   versus,
   hostFails,
 } from "@/lib/company";
-import { locations } from "@/lib/locations";
+import { coreLocations } from "@/lib/locations";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -455,7 +455,7 @@ function Home() {
             Sherman Oaks.
           </p>
           <ul className="mt-12 grid gap-8 md:grid-cols-2">
-            {locations.map((location) => (
+            {coreLocations.map((location) => (
               <li key={location.path}>
                 <Link to={location.path} className="group block">
                   <span className="font-display text-3xl group-hover:text-red">
@@ -468,6 +468,13 @@ function Home() {
               </li>
             ))}
           </ul>
+          <Link
+            to="/service-areas"
+            className="mt-10 inline-flex items-center gap-1 text-sm text-red underline underline-offset-2"
+          >
+            North Hollywood, Burbank, Glendale, the West Valley, and every other area we serve
+            <ArrowRight className="size-3.5" aria-hidden />
+          </Link>
         </div>
       </section>
 

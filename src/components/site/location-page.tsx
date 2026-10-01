@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/site/marks";
+import { FaqList } from "@/components/site/faq-list";
 import { SmartImg } from "@/components/site/smart-img";
 import { company, reviews } from "@/lib/company";
 import { locations, type LocationPage as LocationCopy } from "@/lib/locations";
@@ -10,30 +11,88 @@ export function LocationPage({ page }: { page: LocationCopy }) {
   const quotes = page.reviewNames
     .map((name) => reviews.find((review) => review.name === name))
     .filter((review) => review != null);
-  const others = locations.filter((location) => location.path !== page.path);
+  const others = page.neighbors
+    .map((path) => locations.find((location) => location.path === path))
+    .filter((location) => location != null);
+  const url = `${company.siteUrl}${page.path}`;
+  const crumbs = [
+    { name: "Home", url: `${company.siteUrl}/` },
+    { name: "Service areas", url: `${company.siteUrl}/service-areas` },
+    { name: page.city, url },
+  ];
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": `${url}#service`,
+        name: page.h1,
+        serviceType: page.h1,
+        url,
+        description: page.description,
+        provider: { "@id": `${company.siteUrl}#business` },
+        areaServed: {
+          "@type": "City",
+          name: page.city,
+          containedInPlace: { "@type": "State", name: "California" },
+        },
+        telephone: company.phoneTel,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: crumbs.map((crumb, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: crumb.name,
+          item: crumb.url,
+        })),
+      },
+      ...(page.faqs?.length
+        ? [
+            {
+              "@type": "FAQPage",
+              "@id": `${url}#faq`,
+              mainEntity: page.faqs.map((faq) => ({
+                "@type": "Question",
+                name: faq.q,
+                acceptedAnswer: { "@type": "Answer", text: faq.a },
+              })),
+            },
+          ]
+        : []),
+    ],
+  };
 
   return (
     <main className="pb-16 md:pb-0">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            name: page.h1,
-            serviceType: page.h1,
-            url: `${company.siteUrl}${page.path}`,
-            description: page.description,
-            provider: { "@id": `${company.siteUrl}#business` },
-            areaServed: { "@type": "City", name: `${page.city}, California` },
-            telephone: company.phoneTel,
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
       <section className="bg-cream">
         <div className="mx-auto grid max-w-7xl items-end gap-10 px-5 py-16 sm:px-8 md:py-24 lg:grid-cols-2">
           <div>
+            <nav aria-label="Breadcrumb" className="mb-6 text-xs text-muted">
+              <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <li>
+                  <Link to="/" className="hover:text-red">
+                    Home
+                  </Link>
+                </li>
+                <li aria-hidden>/</li>
+                <li>
+                  <Link to="/service-areas" className="hover:text-red">
+                    Service areas
+                  </Link>
+                </li>
+                <li aria-hidden>/</li>
+                <li aria-current="page" className="text-ink">
+                  {page.city}
+                </li>
+              </ol>
+            </nav>
             <Eyebrow>{page.eyebrow}</Eyebrow>
             <h1 className="display-section">{page.h1}</h1>
             <p className="mt-5 max-w-xl text-muted">{page.lede}</p>
@@ -140,6 +199,18 @@ export function LocationPage({ page }: { page: LocationCopy }) {
         </div>
       </section>
 
+      {page.faqs?.length ? (
+        <section className="bg-cream py-20 md:py-28">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8">
+            <Eyebrow>Questions</Eyebrow>
+            <h2 className="display-section">Before you book in {page.city}.</h2>
+            <div className="mt-10">
+              <FaqList items={page.faqs} />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="bg-paper py-20 md:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-2">
           <div>
@@ -183,6 +254,11 @@ export function LocationPage({ page }: { page: LocationCopy }) {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link to="/service-areas" className="text-sm text-red underline underline-offset-2">
+                  Every neighborhood we serve
+                </Link>
+              </li>
               <li>
                 <Link to="/airbnb" className="text-sm text-red underline underline-offset-2">
                   Airbnb turnovers across the Valley

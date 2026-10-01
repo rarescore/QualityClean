@@ -158,6 +158,12 @@ function ContactPage() {
               );
             })}
           </ul>
+          <Link
+            to="/service-areas"
+            className="mt-8 inline-flex text-sm text-red underline underline-offset-2"
+          >
+            See every service-area page
+          </Link>
         </div>
       </section>
 
