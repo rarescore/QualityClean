@@ -134,7 +134,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-cream/10">
-        <div className="mx-auto max-w-7xl px-5 pt-4 pb-24 text-center text-xs text-cream/75 sm:px-8 md:pb-4">
+        <div className="mx-auto max-w-7xl px-5 pt-4 pb-24 text-center text-xs text-cream/75 sm:px-8">
           Website by{" "}
           <a
             href="mailto:usscallisterllc@gmail.com?subject=Extreme%20Quality%20Clean%20website"
