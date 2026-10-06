@@ -109,7 +109,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-cream/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 pt-6 pb-24 text-xs md:pb-6 text-cream/75 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-xs text-cream/75 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>
             © {new Date().getFullYear()} {company.legal}. All rights reserved.
           </p>
@@ -130,6 +130,18 @@ export function SiteFooter() {
               {" · and greater L.A."}
             </span>
           </p>
+        </div>
+      </div>
+
+      <div className="border-t border-cream/10">
+        <div className="mx-auto max-w-7xl px-5 pt-4 pb-24 text-center text-xs text-cream/75 sm:px-8 md:pb-4">
+          Website by{" "}
+          <a
+            href="mailto:usscallisterllc@gmail.com?subject=Extreme%20Quality%20Clean%20website"
+            className="font-semibold text-cream underline underline-offset-2 hover:text-red"
+          >
+            USSCALLISTER LLC
+          </a>
         </div>
       </div>
     </footer>
