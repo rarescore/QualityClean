@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ClockLockup, Eyebrow } from "@/components/site/marks";
 import { CinematicVideo } from "@/components/site/cinematic-video";
 import { SmartImg } from "@/components/site/smart-img";
-import { company, residentialIncludes, services } from "@/lib/company";
+import { company, services } from "@/lib/company";
+import { servicePages } from "@/lib/service-pages";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/services")({
@@ -32,111 +33,7 @@ export const Route = createFileRoute("/services")({
   },
 });
 
-const longform = [
-  {
-    id: "residential",
-    title: "Residential cleaning",
-    image: "/images/kitchen.webp",
-    alt: "Los Angeles kitchen after a residential house cleaning",
-    lead: "House cleaning is serious work. We treat every home as if it were ours — no rushed rooms, no skipped edges.",
-    body: "A standard visit covers living areas, kitchens, and baths: floors swept, mopped, and vacuumed; furniture and décor dusted; entry glass inside and out; doors and frames spotted; trash out. Kitchens get counters, sinks, faucets, appliances, microwave, coffee pot, and cabinet faces. Bathrooms are disinfected — vanity, toilet, tub and shower, glass.",
-    items: residentialIncludes,
-    guides: [
-      {
-        slug: "los-angeles-house-cleaning-checklist",
-        label: "House cleaning checklist",
-      },
-      {
-        slug: "how-often-should-you-clean-your-house",
-        label: "Home cleaning schedule",
-      },
-    ],
-  },
-  {
-    id: "deep",
-    title: "Deep clean & move-in / out",
-    image: "/images/bathroom.webp",
-    alt: "Bathroom grout and glass after a deep clean in Los Angeles",
-    lead: "The heavy reset — for a new lease, a listing going live, or the first time in a long time.",
-    body: "We scope inside appliances, baseboards, tracks, switches, vents, and the grout weekly service never sees. Move-in and move-out work is quoted to the empty (or almost empty) house so there are no surprises on key day.",
-    items: [
-      "Inside oven, fridge, and cabinets as agreed",
-      "Baseboards, window tracks, switches, vents",
-      "Bathrooms to grout and glass",
-      "Empty-home move-in / move-out",
-    ],
-    guides: [
-      {
-        slug: "deep-cleaning-vs-regular-cleaning-los-angeles",
-        label: "Deep vs regular cleaning",
-      },
-      {
-        slug: "los-angeles-move-out-cleaning-checklist",
-        label: "Move-out checklist",
-      },
-    ],
-  },
-  {
-    id: "commercial",
-    title: "Commercial & offices",
-    image: "/images/office.webp",
-    alt: "Los Angeles office suite after nightly commercial cleaning",
-    lead: "Most companies cannot absorb a large commercial night. We can — and we can be there within hours.",
-    body: "Nightly janitorial, weekly suites, event resets, and the glass conference room that has to look invisible by 8am. Crews run 24/7. Larger jobs are quoted from a walkthrough or a few photos, usually the same day.",
-    items: [
-      "Daily, nightly, or weekly janitorial",
-      "Kitchenettes, restrooms, floors, glass",
-      "After-hours and weekend crews",
-      "Emergency and event turnarounds",
-    ],
-    guides: [
-      {
-        slug: "los-angeles-office-cleaning-checklist",
-        label: "Office cleaning checklist",
-      },
-    ],
-  },
-  {
-    id: "carpet",
-    title: "Carpet, upholstery & floors",
-    image: "/images/linen.webp",
-    alt: "Freshly extracted carpet and upholstery in a Los Angeles home",
-    lead: "Carpet and upholstery are a specialty — truck-mounted steam, not a rental wand.",
-    body: "Deep steam carpets, shampoo, drapery, mattresses, oriental rugs, natural stone, wood floors, pet stain and odor, and water-damage cleanup. We also steam chairs, couches, and restaurant or office carpet.",
-    items: [
-      "Truck-mounted deep steam",
-      "Upholstery, drapery, mattresses",
-      "Rugs, stone, and wood",
-      "Pet odor and water-damage cleanup",
-    ],
-    guides: [
-      {
-        slug: "pet-stain-odor-carpet-cleaning-los-angeles",
-        label: "Pet stain and odor guide",
-      },
-    ],
-  },
-  {
-    id: "windows",
-    title: "Window cleaning",
-    image: "/images/windows.webp",
-    alt: "Floor-to-ceiling windows after professional cleaning in Los Angeles",
-    lead: "Too many dirty windows is a Los Angeles problem we actually enjoy.",
-    body: "Residential and commercial glass, interior and exterior, storefronts and the floor-to-ceiling wall you put on the listing. Tracks and sills as scoped. Quote is fast.",
-    items: [
-      "Interior and exterior glass",
-      "Storefronts and high-visibility panes",
-      "Tracks and sills as scoped",
-      "Homes and commercial",
-    ],
-    guides: [
-      {
-        slug: "hard-water-stains-windows-los-angeles",
-        label: "Hard-water window guide",
-      },
-    ],
-  },
-];
+const longform = servicePages;
 
 function ServicesPage() {
   return (
@@ -159,7 +56,7 @@ function ServicesPage() {
           {services.map((svc, i) => (
             <a
               key={svc.slug}
-              href={svc.slug === "airbnb" ? "/airbnb" : `#${svc.slug === "deep" ? "deep" : svc.slug}`}
+              href={svc.href}
               className="group overflow-hidden rounded-xl border border-line bg-cream"
             >
               <SmartImg
@@ -232,7 +129,11 @@ function ServicesPage() {
               height={675}
             />
             <div>
-              <h2 className="font-display text-4xl md:text-5xl">{block.title}</h2>
+              <h2 className="font-display text-4xl md:text-5xl">
+                <Link to={block.path} className="hover:text-red">
+                  {block.title}
+                </Link>
+              </h2>
               <p className="mt-4 font-medium text-ink">{block.lead}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted md:text-base">
                 {block.body}
@@ -245,6 +146,11 @@ function ServicesPage() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-6 text-sm">
+                <Link to={block.path} className="text-red underline underline-offset-2">
+                  {block.h1}: full details
+                </Link>
+              </p>
               {block.guides.length > 0 ? (
                 <p className="mt-6 text-sm text-muted">
                   Related:{" "}

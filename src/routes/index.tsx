@@ -319,7 +319,7 @@ function Home() {
             {services.map((svc, i) => (
               <Link
                 key={svc.slug}
-                to={svc.slug === "airbnb" ? "/airbnb" : "/services"}
+                to={svc.href}
                 className={
                   i === 0
                     ? "group relative min-h-80 overflow-hidden rounded-xl md:col-span-4 md:min-h-[28rem]"
