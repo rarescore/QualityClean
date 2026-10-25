@@ -40,10 +40,12 @@ function ServicesPage() {
     <main className="pb-16 md:pb-0">
       <section className="border-b border-line bg-navy py-20 text-cream md:py-28">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <Eyebrow tone="cream">Services</Eyebrow>
-          <h1 className="max-w-3xl font-display text-5xl leading-tight md:text-7xl">
+          <Eyebrow as="h1" tone="cream">
+            Cleaning Services in Sherman Oaks, the San Fernando Valley &amp; Los Angeles
+          </Eyebrow>
+          <p className="max-w-3xl font-display text-5xl leading-tight md:text-7xl">
             Everything that has to be clean in Los Angeles.
-          </h1>
+          </p>
           <p className="mt-5 max-w-xl text-cream/85">
             Airbnb turnovers, homes, offices, carpet, glass. Same company,
             same 24/7 phone, same rule: the price before we start.
