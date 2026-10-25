@@ -91,7 +91,7 @@ export const services = [
     summary:
       "Recurring and one-time house cleaning treated like our own — no rushed corners, no surprise extras.",
     image: "/images/kitchen.webp",
-    href: "/services#residential",
+    href: "/services/house-cleaning",
     featured: false,
     includes: [],
   },
@@ -102,7 +102,7 @@ export const services = [
     summary:
       "Nightly janitorial, weekly suites, and the glass that has to be invisible by 8am. Crews run 24/7.",
     image: "/images/office.webp",
-    href: "/services#commercial",
+    href: "/services/office-cleaning",
     featured: false,
     includes: [],
   },
@@ -113,7 +113,7 @@ export const services = [
     summary:
       "Truck-mounted steam, upholstery, rugs, stone, wood, pet odor, and water-damage cleanup.",
     image: "/images/linen.webp",
-    href: "/services#carpet",
+    href: "/services/carpet-cleaning",
     featured: false,
     includes: [],
   },
@@ -124,7 +124,7 @@ export const services = [
     summary:
       "Interior and exterior, homes and storefronts — the floor-to-ceiling wall on the listing included.",
     image: "/images/windows.webp",
-    href: "/services#windows",
+    href: "/services/window-cleaning",
     featured: false,
     includes: [],
   },
@@ -135,7 +135,7 @@ export const services = [
     summary:
       "The first clean, the last clean, the listing going live. Grout, tracks, inside appliances.",
     image: "/images/bathroom.webp",
-    href: "/services#deep",
+    href: "/services/deep-cleaning",
     featured: false,
     includes: [],
   },

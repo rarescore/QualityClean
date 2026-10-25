@@ -89,16 +89,16 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/55 to-navy/40" />
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy/70 to-transparent" />
         <div className="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-end px-5 pb-16 pt-36 sm:px-8 md:pb-20">
-          <Eyebrow tone="cream" className="rise-in">
-            Los Angeles · Airbnb turnovers
+          <Eyebrow as="h1" tone="cream" className="rise-in">
+            House, Airbnb &amp; Office Cleaning in Sherman Oaks &amp; Los Angeles
           </Eyebrow>
-          <h1 className="display-hero max-w-5xl text-cream">
+          <p className="display-hero max-w-5xl text-cream">
             Check-out at <span className="display-num">11</span>.
             <br />
             <em>
               Guest-ready at <span className="display-num">3</span>.
             </em>
-          </h1>
+          </p>
           <p className="rise-in-3 mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
             You are not buying hours. You are buying the next review.
             Hotel-standard turnovers for LA hosts — quoted in writing before we
@@ -319,7 +319,7 @@ function Home() {
             {services.map((svc, i) => (
               <Link
                 key={svc.slug}
-                to={svc.slug === "airbnb" ? "/airbnb" : "/services"}
+                to={svc.href}
                 className={
                   i === 0
                     ? "group relative min-h-80 overflow-hidden rounded-xl md:col-span-4 md:min-h-[28rem]"

@@ -32,10 +32,12 @@ export function Eyebrow({
   children,
   className,
   tone = "red",
+  as: Tag = "p",
 }: {
   children: ReactNode;
   className?: string;
   tone?: "red" | "cream" | "navy";
+  as?: "p" | "div" | "h1";
 }) {
   const color =
     tone === "cream"
@@ -44,7 +46,7 @@ export function Eyebrow({
         ? "text-navy"
         : "text-red";
   return (
-    <p
+    <Tag
       className={cn(
         "mb-3 flex items-center gap-2 text-[0.6875rem] font-medium uppercase tracking-[0.22em]",
         color,
@@ -53,7 +55,7 @@ export function Eyebrow({
     >
       <Sparkle className="size-3 shrink-0" />
       {children}
-    </p>
+    </Tag>
   );
 }
 

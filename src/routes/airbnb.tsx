@@ -62,10 +62,12 @@ function AirbnbPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/75 to-navy/35" />
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy/70 to-transparent" />
         <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col justify-end px-5 py-16 sm:px-8 md:pb-24 md:pt-40">
-          <Eyebrow tone="cream">The product · Host program</Eyebrow>
-          <h1 className="display-hero max-w-4xl text-cream">
+          <Eyebrow as="h1" tone="cream">
+            Airbnb &amp; Short-Term Rental Turnover Cleaning in Los Angeles
+          </Eyebrow>
+          <p className="display-hero max-w-4xl text-cream">
             Five-star listings are a cleaning problem.
-          </h1>
+          </p>
           <p className="mt-6 max-w-lg text-base text-cream/85 md:text-lg">
             {turnoverProduct.pitch} The number before we start.
           </p>
