@@ -29,7 +29,12 @@ export const Route = createFileRoute("/articles/$slug")({
     const a = loaderData?.article;
     if (!a) return {};
     return seoHead({
-      title: `${a.seoTitle} | Extreme Quality Clean`,
+      // Keep the <title> within ~60 chars so Google doesn't truncate it;
+      // drop the brand suffix when the article title is already long.
+      title:
+        a.seoTitle.length + " | Extreme Quality Clean".length > 60
+          ? a.seoTitle
+          : `${a.seoTitle} | Extreme Quality Clean`,
       description: a.description,
       path: `/articles/${a.slug}`,
       image: a.image,
