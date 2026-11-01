@@ -1,10 +1,11 @@
 /**
- * GA4 gtag.js, rendered in the root <head> only when VITE_GA4_ID is set at build
- * time (Netlify: Site configuration > Environment variables). Unset = no tag at all.
+ * GA4 gtag.js, rendered in the root <head>; VITE_GA4_ID (build-time) overrides the
+ * built-in public ID below (Netlify: Site configuration > Environment variables).
  * Enhanced Measurement "history events" counts client-side navigations; no manual
  * page_view here (it would double count).
  */
-const RAW_ID = (import.meta.env.VITE_GA4_ID as string | undefined)?.trim() ?? "";
+// Public GA4 measurement ID for extremequalityclean.com; VITE_GA4_ID overrides it.
+const RAW_ID = ((import.meta.env.VITE_GA4_ID as string | undefined) || "G-7ZQFM9XQH2").trim();
 export const GA4_ID = /^G-[A-Z0-9]+$/.test(RAW_ID) ? RAW_ID : "";
 
 export function GoogleAnalyticsTag() {
