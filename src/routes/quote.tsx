@@ -15,12 +15,14 @@ export const Route = createFileRoute("/quote")({
     service: typeof search.service === "string" ? search.service : undefined,
   }),
   component: QuotePage,
-  head: () =>
+  // GSC audit 2026-11-01: /quote?service=<id> variants duplicate /quote; keep them out of the index.
+  head: ({ match }) =>
     seoHead({
       title: "Request a Cleaning Quote | Extreme Quality Clean",
       description:
         "Request a quote for Airbnb turnovers, home, or commercial cleaning in Los Angeles. Price before we start. Call (818) 294-3141 24/7.",
       path: "/quote",
+      robots: match.search.service ? "noindex, follow" : undefined,
     }),
 });
 

@@ -4,7 +4,6 @@ import { areas, company, faqs, services } from "@/lib/company";
 export function JsonLd() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const id = `${company.siteUrl}#business`;
-  const showRating = path === "/";
   const showFaq = path === "/";
 
   const data = {
@@ -53,17 +52,6 @@ export function JsonLd() {
           opens: "00:00",
           closes: "23:59",
         },
-        ...(showRating
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: company.ratings.google.value,
-                reviewCount: company.ratings.google.count,
-                bestRating: 5,
-                worstRating: 1,
-              },
-            }
-          : {}),
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Cleaning services in Los Angeles",

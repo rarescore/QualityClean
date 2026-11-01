@@ -14,6 +14,7 @@ export function seoHead({
   type = "website",
   published,
   modified,
+  robots = "index, follow",
 }: {
   title: string;
   description: string;
@@ -22,13 +23,14 @@ export function seoHead({
   type?: "website" | "article";
   published?: string;
   modified?: string;
+  robots?: string;
 }) {
   const url = absUrl(path);
   const img = absUrl(image);
   const meta: { title?: string; name?: string; property?: string; content?: string }[] = [
     { title },
     { name: "description", content: description },
-    { name: "robots", content: "index, follow" },
+    { name: "robots", content: robots },
     { name: "author", content: company.short },
     { property: "og:type", content: type },
     { property: "og:title", content: title },
