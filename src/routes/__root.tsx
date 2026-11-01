@@ -1,3 +1,5 @@
+import { ClarityTag } from "@/components/site/clarity";
+import { GoogleAnalyticsTag } from "@/components/site/google-analytics";
 import {
   createRootRoute,
   HeadContent,
@@ -46,6 +48,8 @@ function RootDocument() {
     <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
         <HeadContent />
+        <GoogleAnalyticsTag />
+        <ClarityTag />
       </head>
       <body className="bg-paper font-sans text-ink">
         <a href="#content" className="skip-link">
