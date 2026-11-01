@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => {
     const base = seoHead({
-      title: "Extreme Quality Clean | Airbnb & Home Cleaning Los Angeles",
+      title: "Extreme Quality Clean | Airbnb & House Cleaning Services LA",
       description:
         "Los Angeles Airbnb turnovers, residential and commercial cleaning. Check-out at 11. Guest-ready at 3. 25 years. 24/7. Sherman Oaks.",
       path: "/",
