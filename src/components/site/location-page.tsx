@@ -6,6 +6,7 @@ import { FaqList } from "@/components/site/faq-list";
 import { SmartImg } from "@/components/site/smart-img";
 import { company, reviews } from "@/lib/company";
 import { locations, type LocationPage as LocationCopy } from "@/lib/locations";
+import { servicePages } from "@/lib/service-pages";
 
 export function LocationPage({ page }: { page: LocationCopy }) {
   const quotes = page.reviewNames
@@ -244,6 +245,21 @@ export function LocationPage({ page }: { page: LocationCopy }) {
             </div>
           </div>
           <div>
+            <Eyebrow>Services in {page.city}</Eyebrow>
+            <ul className="mt-6 mb-12 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              <li>
+                <Link to="/airbnb" className="text-red underline underline-offset-2">
+                  Airbnb turnover cleaning
+                </Link>
+              </li>
+              {servicePages.map((service) => (
+                <li key={service.slug}>
+                  <Link to={service.path} className="text-red underline underline-offset-2">
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
             <Eyebrow>Also nearby</Eyebrow>
             <ul className="mt-6 space-y-4">
               {others.map((location) => (
