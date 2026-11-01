@@ -59,7 +59,7 @@ export const locations: LocationPage[] = [
   {
     path: "/house-cleaning-van-nuys",
     city: "Van Nuys",
-    title: "House Cleaning in Van Nuys | Extreme Quality Clean",
+    title: "House Cleaning Services in Van Nuys | Extreme Quality Clean",
     description:
       "House cleaning in Van Nuys for apartments, family houses, and move-outs. Recurring or one-time. Quoted before we start. Call (818) 294-3141, 24/7.",
     h1: "House cleaning in Van Nuys",
@@ -147,7 +147,7 @@ export const locations: LocationPage[] = [
   {
     path: "/cleaning-services-encino",
     city: "Encino",
-    title: "Cleaning Services in Encino | Extreme Quality Clean",
+    title: "House Cleaning Services in Encino | Extreme Quality Clean",
     description:
       "Cleaning services in Encino for larger homes: recurring cleans, deep cleans, and windows. Quoted in writing before we start. Call (818) 294-3141, 24/7.",
     h1: "Cleaning services in Encino",
