@@ -18,13 +18,20 @@ import { cn } from "@/lib/utils";
 type Props = {
   defaultService?: ServiceId;
   compact?: boolean;
+  variant?: "full" | "book";
+  quickMobile?: boolean;
 };
 
 function digits(value: string) {
   return value.replace(/\D/g, "");
 }
 
-export function QuoteForm({ defaultService = "airbnb", compact = false }: Props) {
+export function QuoteForm({
+  defaultService = "airbnb",
+  compact = false,
+  variant = "full",
+  quickMobile = false,
+}: Props) {
   const [service, setService] = useState<ServiceId>(defaultService);
   const [beds, setBeds] = useState(2);
   const [baths, setBaths] = useState(2);
@@ -38,6 +45,7 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
   const [checkout, setCheckout] = useState("11:00");
   const [checkin, setCheckin] = useState("15:00");
   const [listing, setListing] = useState("");
+  const [lockbox, setLockbox] = useState("");
   const [notes, setNotes] = useState("");
   const [military, setMilitary] = useState(false);
   const [sent, setSent] = useState<"email" | "activate" | "mailto" | null>(null);
@@ -87,6 +95,7 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
       checkout,
       checkin,
       listing: listing.trim(),
+      lockbox: lockbox.trim(),
       notes: notes.trim(),
       service,
       beds,
@@ -148,6 +157,33 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
         />
       </div>
 
+      {variant === "book" ? (
+        <BookQuoteFields
+          service={service}
+          setService={setService}
+          beds={beds}
+          setBeds={setBeds}
+          baths={baths}
+          setBaths={setBaths}
+          frequency={frequency}
+          setFrequency={setFrequency}
+          name={name}
+          setName={setName}
+          phone={phone}
+          setPhone={setPhone}
+          email={email}
+          setEmail={setEmail}
+          listing={listing}
+          setListing={setListing}
+          lockbox={lockbox}
+          setLockbox={setLockbox}
+          notes={notes}
+          setNotes={setNotes}
+          error={error}
+          busy={busy}
+          quickMobile={quickMobile}
+        />
+      ) : (
       <div
         className={cn(
           "grid items-start gap-6",
@@ -394,8 +430,339 @@ export function QuoteForm({ defaultService = "airbnb", compact = false }: Props)
           </div>
         </aside>
       </div>
+      )}
     </form>
     </>
+  );
+}
+
+function ChoiceRow<T extends string | number>({
+  legend,
+  value,
+  options,
+  onPick,
+  pressed,
+  className,
+}: {
+  legend: string;
+  value: T;
+  options: readonly { value: T; label: string }[];
+  onPick: (value: T) => void;
+  pressed?: (option: T) => boolean;
+  className?: string;
+}) {
+  return (
+    <fieldset className={className}>
+      <legend className="text-sm font-medium text-ink">{legend}</legend>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {options.map((opt) => {
+          const selected = pressed ? pressed(opt.value) : opt.value === value;
+          return (
+            <button
+              key={String(opt.value)}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onPick(opt.value)}
+              className={cn(
+                "h-11 rounded-full border px-4 text-sm transition-colors",
+                selected
+                  ? "border-navy bg-navy text-cream"
+                  : "border-line bg-paper text-ink hover:border-navy",
+              )}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
+const textUsMessage = "Hey, I would like to have my property cleaned.";
+
+function BookQuoteFields({
+  service,
+  setService,
+  beds,
+  setBeds,
+  baths,
+  setBaths,
+  frequency,
+  setFrequency,
+  name,
+  setName,
+  phone,
+  setPhone,
+  email,
+  setEmail,
+  listing,
+  setListing,
+  lockbox,
+  setLockbox,
+  notes,
+  setNotes,
+  error,
+  busy,
+  quickMobile = false,
+}: {
+  service: ServiceId;
+  setService: (value: ServiceId) => void;
+  beds: number;
+  setBeds: (value: number) => void;
+  baths: number;
+  setBaths: (value: number) => void;
+  frequency: FrequencyId;
+  setFrequency: (value: FrequencyId) => void;
+  name: string;
+  setName: (value: string) => void;
+  phone: string;
+  setPhone: (value: string) => void;
+  email: string;
+  setEmail: (value: string) => void;
+  listing: string;
+  setListing: (value: string) => void;
+  lockbox: string;
+  setLockbox: (value: string) => void;
+  notes: string;
+  setNotes: (value: string) => void;
+  error: string;
+  busy: boolean;
+  quickMobile?: boolean;
+}) {
+  const nameInvalid = Boolean(error) && name.trim().length < 2;
+  const phoneInvalid = Boolean(error) && digits(phone).length < 10;
+  const leadServices = serviceOptions.slice(0, 3);
+  const moreServices = serviceOptions.slice(3);
+  const [showOther, setShowOther] = useState(() =>
+    moreServices.some((opt) => opt.id === service),
+  );
+  return (
+    <div className="space-y-6">
+      <ChoiceRow
+        className="hidden md:block"
+        legend="Service"
+        value={service}
+        options={serviceOptions.map((opt) => ({ value: opt.id, label: opt.label }))}
+        onPick={setService}
+      />
+      <fieldset className="md:hidden">
+        <legend className="text-sm font-medium text-ink">Service</legend>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {leadServices.map((opt) => {
+            const selected = service === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setService(opt.id)}
+                className={cn(
+                  "h-11 rounded-full border px-4 text-sm transition-colors",
+                  selected
+                    ? "border-navy bg-navy text-cream"
+                    : "border-line bg-paper text-ink hover:border-navy",
+                )}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            aria-expanded={showOther}
+            onClick={() => setShowOther((open) => !open)}
+            className={cn(
+              "h-11 rounded-full border px-4 text-sm transition-colors",
+              showOther
+                ? "border-navy bg-navy text-cream"
+                : "border-line bg-paper text-ink hover:border-navy",
+            )}
+          >
+            Other
+          </button>
+          {showOther
+            ? moreServices.map((opt) => {
+                const selected = service === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setService(opt.id)}
+                    className={cn(
+                      "h-11 rounded-full border px-4 text-sm transition-colors",
+                      selected
+                        ? "border-navy bg-navy text-cream"
+                        : "border-line bg-paper text-ink hover:border-navy",
+                    )}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })
+            : null}
+        </div>
+      </fieldset>
+      <ChoiceRow
+        className="md:hidden"
+        legend="Bathrooms"
+        value={baths}
+        options={[
+          { value: 1, label: "1" },
+          { value: 2, label: "2" },
+          { value: 3, label: "3+" },
+        ]}
+        pressed={(n) => (n === 3 ? baths >= 3 : baths === n)}
+        onPick={setBaths}
+      />
+      <ChoiceRow
+        className="hidden md:block"
+        legend="Bathrooms"
+        value={baths}
+        options={[1, 2, 3, 4, 5, 6].map((n) => ({
+          value: n,
+          label: n === 6 ? "6+" : String(n),
+        }))}
+        onPick={setBaths}
+      />
+      <ChoiceRow
+        className="md:hidden"
+        legend="Bedrooms"
+        value={beds}
+        options={[
+          { value: 0, label: "Studio" },
+          { value: 1, label: "1" },
+          { value: 2, label: "2" },
+          { value: 3, label: "3+" },
+        ]}
+        pressed={(n) => (n === 3 ? beds >= 3 : beds === n)}
+        onPick={setBeds}
+      />
+      <ChoiceRow
+        className="hidden md:block"
+        legend="Bedrooms"
+        value={beds}
+        options={[0, 1, 2, 3, 4, 5, 6].map((n) => ({
+          value: n,
+          label: n === 0 ? "Studio" : n === 6 ? "6+" : String(n),
+        }))}
+        onPick={setBeds}
+      />
+      <ChoiceRow
+        legend="Cadence"
+        value={frequency}
+        options={frequencyOptions.map((opt) => ({ value: opt.id, label: opt.label }))}
+        onPick={setFrequency}
+      />
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            name="name"
+            required
+            autoComplete="name"
+            value={name}
+            aria-invalid={nameInvalid}
+            aria-describedby={error ? "quote-error" : undefined}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="phone">Phone number</Label>
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            inputMode="tel"
+            value={phone}
+            aria-invalid={phoneInvalid}
+            aria-describedby={error ? "quote-error" : undefined}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div className="sm:col-span-2">
+          <Label htmlFor="email">Email address</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className={cn("sm:col-span-2", quickMobile && "max-md:hidden")}>
+          <Label htmlFor="listing">Listing URL <span className="font-normal text-muted">(optional)</span></Label>
+          <Input
+            id="listing"
+            name="listing"
+            type="url"
+            inputMode="url"
+            placeholder="airbnb.com/rooms/…"
+            value={listing}
+            onChange={(e) => setListing(e.target.value)}
+          />
+        </div>
+        <div className={cn("sm:col-span-2", quickMobile && "max-md:hidden")}>
+          <Label htmlFor="lockbox">Lockbox code</Label>
+          <Input
+            id="lockbox"
+            name="lockbox"
+            autoComplete="off"
+            value={lockbox}
+            onChange={(e) => setLockbox(e.target.value)}
+            placeholder="Code, or when you’ll send it"
+          />
+        </div>
+      </div>
+
+      <div className={cn(quickMobile && "max-md:hidden")}>
+        <Label htmlFor="notes">Notes</Label>
+        <Textarea
+          id="notes"
+          name="notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Pets, linens, add-ons, anything the crew should know"
+        />
+      </div>
+
+      {error ? (
+        <p id="quote-error" role="alert" className="text-sm font-medium text-red">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="grid grid-cols-2 gap-3">
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full px-3"
+          disabled={busy}
+          aria-busy={busy}
+        >
+          {busy ? "Sending…" : "Request a quote"}
+        </Button>
+        <Button asChild variant="navy" size="lg" className="w-full px-3">
+          <a href={`sms:${company.phoneTel}?body=${encodeURIComponent(textUsMessage)}`}>
+            Text Us <span className="font-normal opacity-80">(faster)</span>
+          </a>
+        </Button>
+      </div>
+      <p className="text-sm text-muted">
+        The request goes to the office before a crew is booked. Or call{" "}
+        <a href={`tel:${company.phoneTel}`} className="text-red underline underline-offset-2">
+          {company.phoneDisplay}
+        </a>{" "}
+        — we pick up 24/7.
+      </p>
+    </div>
   );
 }
 

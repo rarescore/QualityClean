@@ -55,6 +55,7 @@ export const submitQuote = createServerFn({ method: "POST" })
       checkout: clip(data.checkout, 8),
       checkin: clip(data.checkin, 8),
       listing: clip(data.listing, 300),
+      lockbox: clip(data.lockbox, 80),
       notes: clip(data.notes, 2000),
       service: asService(data.service),
       beds: Number.isFinite(beds) ? Math.max(0, Math.min(8, Math.round(beds))) : 0,

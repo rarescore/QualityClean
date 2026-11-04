@@ -15,6 +15,7 @@ export type QuoteInput = {
   checkout: string;
   checkin: string;
   listing: string;
+  lockbox: string;
   notes: string;
   service: ServiceId;
   beds: number;
@@ -46,6 +47,7 @@ export function quoteMessage(input: QuoteInput) {
     input.service === "airbnb" ? `Check-out: ${input.checkout || "—"}` : null,
     input.service === "airbnb" ? `Check-in: ${input.checkin || "—"}` : null,
     input.listing ? `Listing: ${input.listing}` : null,
+    input.lockbox ? `Lockbox code: ${input.lockbox}` : null,
     input.sameDay ? "Same-day if possible: yes" : null,
     input.military ? "Senior / military discount: requested" : null,
     input.notes ? `Notes: ${input.notes}` : null,

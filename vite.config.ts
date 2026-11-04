@@ -1,4 +1,3 @@
-import { gzipSync } from "node:zlib";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
@@ -143,106 +142,6 @@ function authPopupPlugin(): Plugin {
   };
 }
 
-
-function previewOptimizePlugin(): Plugin {
-  return {
-    name: "app-builder:preview-optimize",
-    configurePreviewServer(server) {
-      server.middlewares.use((req, res, next) => {
-        const url = (req.url ?? "").split("?", 1)[0] ?? "";
-        if (
-          url.startsWith("/assets/") ||
-          url.startsWith("/fonts/") ||
-          url.startsWith("/images/") ||
-          url.startsWith("/videos/") ||
-          url.startsWith("/logo") ||
-          url === "/favicon.svg" ||
-          url === "/og.webp" ||
-          url === "/og.jpg"
-        ) {
-          res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-        }
-
-        if (/\.(mp4|webm|webp|png|jpe?g|gif|woff2|ico|avif)$/i.test(url)) {
-          next();
-          return;
-        }
-
-        // Only compress static text assets. HTML is streamed by Nitro; wrapping
-        // write/end deadlocks those responses. Vercel gzips HTML at the edge.
-        if (!/\.(js|mjs|css|xml|txt|svg|json|webmanifest|map)$/i.test(url)) {
-          next();
-          return;
-        }
-
-        const accept = String(req.headers["accept-encoding"] ?? "");
-        if (!/\bgzip\b/i.test(accept)) {
-          next();
-          return;
-        }
-
-        const chunks: Buffer[] = [];
-        const originalWrite = res.write.bind(res);
-        const originalEnd = res.end.bind(res);
-
-        res.write = ((chunk: unknown, encoding?: unknown, cb?: unknown) => {
-          if (chunk) {
-            const enc = typeof encoding === "string" ? encoding : undefined;
-            chunks.push(Buffer.from(chunk as string | Buffer, enc as BufferEncoding | undefined));
-          }
-          if (typeof encoding === "function") encoding();
-          else if (typeof cb === "function") cb();
-          return true;
-        }) as typeof res.write;
-
-        res.end = ((chunk?: unknown, encoding?: unknown, cb?: unknown) => {
-          if (typeof chunk === "function") {
-            cb = chunk;
-            chunk = undefined;
-            encoding = undefined;
-          } else if (typeof encoding === "function") {
-            cb = encoding;
-            encoding = undefined;
-          }
-          if (chunk) {
-            const enc = typeof encoding === "string" ? encoding : undefined;
-            chunks.push(Buffer.from(chunk as string | Buffer, enc as BufferEncoding | undefined));
-          }
-          const body = chunks.length ? Buffer.concat(chunks) : Buffer.alloc(0);
-          const callback = typeof cb === "function" ? cb : undefined;
-          if (res.headersSent) {
-            if (body.length) originalWrite(body);
-            return originalEnd(callback);
-          }
-          const type = String(res.getHeader("content-type") || "");
-          const already = res.getHeader("content-encoding");
-          const compressible =
-            !already &&
-            body.length > 400 &&
-            /html|json|javascript|ecmascript|css|xml|svg|text\/plain|manifest/i.test(type);
-          if (compressible) {
-            try {
-              const gz = gzipSync(body, { level: 6 });
-              res.setHeader("Content-Encoding", "gzip");
-              res.setHeader("Content-Length", String(gz.length));
-              const vary = res.getHeader("Vary");
-              res.setHeader("Vary", vary ? `${vary}, Accept-Encoding` : "Accept-Encoding");
-              return originalEnd(gz, callback);
-            } catch {
-              res.setHeader("Content-Length", String(body.length));
-              return originalEnd(body, callback);
-            }
-          }
-          if (body.length) res.setHeader("Content-Length", String(body.length));
-          return originalEnd(body, callback);
-        }) as typeof res.end;
-
-        next();
-      });
-    },
-  };
-}
-
 // `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
@@ -258,15 +157,6 @@ export default defineConfig(({ command, isPreview }) => ({
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
-  build: {
-    sourcemap: true,
-    target: "es2022",
-    cssMinify: "lightningcss",
-    modulePreload: { polyfill: false },
-  },
-  esbuild: {
-    legalComments: "none",
-  },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
@@ -274,14 +164,13 @@ export default defineConfig(({ command, isPreview }) => ({
     // Dev-only /__app-env, read by scripts/check-auth-invariant.mjs.
     appEnvPlugin(),
     // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
-    previewOptimizePlugin(),
     grokPwaPlugin(),
     tailwindcss(),
     tanstackStart(),
     ...(command === "build" || isPreview
       ? [
           nitro({
-            preset: "netlify",
+            preset: "vercel",
             // Auto-registers server/middleware/* (the PWA install page +
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.

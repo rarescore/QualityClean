@@ -22,9 +22,9 @@ import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
+import { Route as LocationsCityRouteImport } from './routes/locations/$city'
 import { Route as ServiceAreasIndexRouteImport } from './routes/service-areas/index'
 import { Route as ServiceAreasCityRouteImport } from './routes/service-areas/$city'
-import { Route as ServicesServiceRouteImport } from './routes/services_.$service'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +93,11 @@ const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   path: '/articles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsCityRoute = LocationsCityRouteImport.update({
+  id: '/locations/$city',
+  path: '/locations/$city',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiceAreasIndexRoute = ServiceAreasIndexRouteImport.update({
   id: '/service-areas/',
   path: '/service-areas/',
@@ -101,11 +106,6 @@ const ServiceAreasIndexRoute = ServiceAreasIndexRouteImport.update({
 const ServiceAreasCityRoute = ServiceAreasCityRouteImport.update({
   id: '/service-areas/$city',
   path: '/service-areas/$city',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesServiceRoute = ServicesServiceRouteImport.update({
-  id: '/services_/$service',
-  path: '/services/$service',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -122,8 +122,8 @@ export interface FileRoutesByFullPath {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/locations/$city': typeof LocationsCityRoute
   '/service-areas/$city': typeof ServiceAreasCityRoute
-  '/services/$service': typeof ServicesServiceRoute
   '/articles/': typeof ArticlesIndexRoute
   '/service-areas/': typeof ServiceAreasIndexRoute
 }
@@ -140,8 +140,8 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/locations/$city': typeof LocationsCityRoute
   '/service-areas/$city': typeof ServiceAreasCityRoute
-  '/services/$service': typeof ServicesServiceRoute
   '/articles': typeof ArticlesIndexRoute
   '/service-areas': typeof ServiceAreasIndexRoute
 }
@@ -159,8 +159,8 @@ export interface FileRoutesById {
   '/quote': typeof QuoteRoute
   '/services': typeof ServicesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/locations/$city': typeof LocationsCityRoute
   '/service-areas/$city': typeof ServiceAreasCityRoute
-  '/services_/$service': typeof ServicesServiceRoute
   '/articles/': typeof ArticlesIndexRoute
   '/service-areas/': typeof ServiceAreasIndexRoute
 }
@@ -179,8 +179,8 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/locations/$city'
     | '/service-areas/$city'
-    | '/services/$service'
     | '/articles/'
     | '/service-areas/'
   fileRoutesByTo: FileRoutesByTo
@@ -197,8 +197,8 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/locations/$city'
     | '/service-areas/$city'
-    | '/services/$service'
     | '/articles'
     | '/service-areas'
   id:
@@ -215,8 +215,8 @@ export interface FileRouteTypes {
     | '/quote'
     | '/services'
     | '/articles/$slug'
+    | '/locations/$city'
     | '/service-areas/$city'
-    | '/services_/$service'
     | '/articles/'
     | '/service-areas/'
   fileRoutesById: FileRoutesById
@@ -234,8 +234,8 @@ export interface RootRouteChildren {
   QuoteRoute: typeof QuoteRoute
   ServicesRoute: typeof ServicesRoute
   ArticlesSlugRoute: typeof ArticlesSlugRoute
+  LocationsCityRoute: typeof LocationsCityRoute
   ServiceAreasCityRoute: typeof ServiceAreasCityRoute
-  ServicesServiceRoute: typeof ServicesServiceRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
   ServiceAreasIndexRoute: typeof ServiceAreasIndexRoute
 }
@@ -333,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations/$city': {
+      id: '/locations/$city'
+      path: '/locations/$city'
+      fullPath: '/locations/$city'
+      preLoaderRoute: typeof LocationsCityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/service-areas/': {
       id: '/service-areas/'
       path: '/service-areas'
@@ -345,13 +352,6 @@ declare module '@tanstack/react-router' {
       path: '/service-areas/$city'
       fullPath: '/service-areas/$city'
       preLoaderRoute: typeof ServiceAreasCityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services_/$service': {
-      id: '/services_/$service'
-      path: '/services/$service'
-      fullPath: '/services/$service'
-      preLoaderRoute: typeof ServicesServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -370,8 +370,8 @@ const rootRouteChildren: RootRouteChildren = {
   QuoteRoute: QuoteRoute,
   ServicesRoute: ServicesRoute,
   ArticlesSlugRoute: ArticlesSlugRoute,
+  LocationsCityRoute: LocationsCityRoute,
   ServiceAreasCityRoute: ServiceAreasCityRoute,
-  ServicesServiceRoute: ServicesServiceRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
   ServiceAreasIndexRoute: ServiceAreasIndexRoute,
 }

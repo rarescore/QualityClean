@@ -32,19 +32,19 @@ export function SiteFooter() {
           </p>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link to="/" className="hover:text-red">
+              <Link to="/" className="menu-react hover:text-red">
                 Home
               </Link>
             </li>
             {nav.map((item) => (
               <li key={item.to}>
-                <Link to={item.to} className="hover:text-red">
+                <Link to={item.to} className="menu-react hover:text-red">
                   {item.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link to="/quote" className="hover:text-red">
+              <Link to="/quote" className="menu-react hover:text-red">
                 Get a quote
               </Link>
             </li>
@@ -62,7 +62,7 @@ export function SiteFooter() {
                 <Link
                   to="/articles/$slug"
                   params={{ slug: a.slug }}
-                  className="hover:text-red"
+                  className="menu-react hover:text-red"
                 >
                   {a.seoTitle}
                 </Link>
@@ -78,12 +78,12 @@ export function SiteFooter() {
           </p>
           <address className="space-y-2.5 text-sm not-italic">
             <p>
-              <a href={`tel:${company.phoneTel}`} className="hover:text-red">
+              <a href={`tel:${company.phoneTel}`} className="menu-react hover:text-red">
                 {company.phoneDisplay}
               </a>
             </p>
             <p>
-              <a href={`mailto:${company.email}`} className="hover:text-red">
+              <a href={`mailto:${company.email}`} className="menu-react hover:text-red">
                 {company.email}
               </a>
             </p>
@@ -92,7 +92,7 @@ export function SiteFooter() {
                 href={company.address.maps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-red"
+                className="menu-react hover:text-red"
               >
                 {company.address.line1}
                 <br />
@@ -109,7 +109,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-cream/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-xs text-cream/75 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 pt-6 pb-24 text-xs md:pb-6 text-cream/75 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>
             © {new Date().getFullYear()} {company.legal}. All rights reserved.
           </p>
@@ -130,18 +130,6 @@ export function SiteFooter() {
               {" · and greater L.A."}
             </span>
           </p>
-        </div>
-      </div>
-
-      <div className="border-t border-cream/10">
-        <div className="mx-auto max-w-7xl px-5 pt-4 pb-24 text-center text-xs text-cream/75 sm:px-8">
-          Website by{" "}
-          <a
-            href="mailto:usscallisterllc@gmail.com?subject=Extreme%20Quality%20Clean%20website"
-            className="font-semibold text-cream underline underline-offset-2 hover:text-red"
-          >
-            USSCALLISTER LLC
-          </a>
         </div>
       </div>
     </footer>

@@ -1,4 +1,3 @@
-import { GoogleAnalyticsTag } from "@/components/site/google-analytics";
 import {
   createRootRoute,
   HeadContent,
@@ -19,9 +18,11 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Extreme Quality Clean" },
       { name: "theme-color", content: "#171834" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "format-detection", content: "telephone=yes" },
     ],
     links: [
@@ -47,7 +48,6 @@ function RootDocument() {
     <html lang="en" suppressHydrationWarning className="antialiased">
       <head>
         <HeadContent />
-        <GoogleAnalyticsTag />
       </head>
       <body className="bg-paper font-sans text-ink">
         <a href="#content" className="skip-link">

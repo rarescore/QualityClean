@@ -10,21 +10,26 @@ export function CountUp({
   suffix?: string;
   className?: string;
 }) {
-  const [n, setN] = useState(0);
+  const [n, setN] = useState(to);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setN(to);
+      return;
+    }
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setN(to);
+      return;
+    }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
-        if (reduce) {
-          setN(to);
-          return;
-        }
         const start = performance.now();
         const dur = 900;
         const tick = (t: number) => {
@@ -35,7 +40,7 @@ export function CountUp({
         };
         requestAnimationFrame(tick);
       },
-      { threshold: 0.4 },
+      { threshold: 0.15 },
     );
     io.observe(el);
     return () => io.disconnect();

@@ -51,7 +51,7 @@ function QuotePage() {
       <section className="bg-paper py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="min-h-[36rem] rounded-xl border border-line bg-cream p-5 shadow-card sm:p-8">
-            <QuoteForm key={defaultService} defaultService={defaultService} />
+            <QuoteForm key={defaultService} defaultService={defaultService} variant="book" />
           </div>
         </div>
       </section>

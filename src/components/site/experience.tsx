@@ -36,16 +36,28 @@ function ScrollProgress() {
 
 function StickyBook() {
   const [on, setOn] = useState(false);
+  const [overQuote, setOverQuote] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     const onScroll = () => setOn(window.scrollY > 640);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const quote = document.getElementById("quote");
+    const io = quote
+      ? new IntersectionObserver(
+          ([entry]) => setOverQuote(Boolean(entry?.isIntersecting)),
+          { threshold: 0.2 },
+        )
+      : null;
+    if (quote && io) io.observe(quote);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      io?.disconnect();
+    };
+  }, [path]);
 
-  if (path === "/quote") return null;
+  if (path === "/quote" || overQuote) return null;
 
   return (
     <div

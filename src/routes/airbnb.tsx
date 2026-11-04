@@ -51,39 +51,37 @@ export const Route = createFileRoute("/airbnb")({
 function AirbnbPage() {
   return (
     <main className="pb-16 md:pb-0">
-      <section className="relative min-h-svh overflow-hidden bg-navy">
+      <section className="relative flex min-h-[100svh] flex-col bg-navy md:block md:min-h-svh md:overflow-hidden">
         <CinematicVideo
           src="/videos/airbnb-bed.mp4"
           poster="/images/posters/airbnb-bed.webp"
           alt="Guest-ready Los Angeles Airbnb bedroom, hotel-made"
           priority
-          className="absolute inset-0 size-full"
+          className="aspect-video w-full shrink-0 md:absolute md:inset-0 md:aspect-auto md:size-full"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/75 to-navy/35" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy/70 to-transparent" />
-        <div className="relative mx-auto flex min-h-svh max-w-7xl flex-col justify-end px-5 py-16 sm:px-8 md:pb-24 md:pt-40">
-          <Eyebrow as="h1" tone="cream">
-            Airbnb &amp; Short-Term Rental Turnover Cleaning in Los Angeles
-          </Eyebrow>
-          <p className="display-hero max-w-4xl text-cream">
+        <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-navy via-navy/70 to-navy/20 md:block" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-40 bg-gradient-to-b from-navy/70 to-transparent md:block" />
+        <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-start px-5 pb-28 pt-6 sm:px-8 md:min-h-svh md:flex-none md:justify-end md:pb-24 md:pt-40">
+          <Eyebrow tone="cream">The product · Host program</Eyebrow>
+          <h1 className="display-hero max-w-4xl text-cream max-md:text-[2.15rem] max-md:leading-[0.98]">
             Five-star listings are a cleaning problem.
-          </p>
-          <p className="mt-6 max-w-lg text-base text-cream/85 md:text-lg">
+          </h1>
+          <p className="mt-3 max-w-lg text-sm leading-snug text-cream/85 md:mt-6 md:text-lg md:leading-relaxed">
             {turnoverProduct.pitch} The number before we start.
           </p>
-          <div className="mt-8">
+          <div className="mt-4 md:mt-8">
             <ClockLockup tone="cream" />
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-4 flex items-center gap-2 md:mt-8 md:flex-wrap md:gap-3">
             <Magnetic>
-              <Button asChild size="xl">
+              <Button asChild size="xl" className="max-md:h-12 max-md:flex-1 max-md:px-3">
                 <Link to="/quote" search={{ service: "airbnb" }}>
                   Book a turnover
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
             </Magnetic>
-            <Button asChild size="xl" variant="cream">
+            <Button asChild size="xl" variant="cream" className="max-md:h-12 max-md:flex-1 max-md:px-3">
               <a href={`tel:${company.phoneTel}`}>{company.phoneDisplay}</a>
             </Button>
           </div>

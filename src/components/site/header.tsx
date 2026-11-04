@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, Phone, X, ArrowRight } from "lucide-react";
 import { company, nav } from "@/lib/company";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -55,6 +55,16 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
+      {overlay && (
+        <button
+          type="button"
+          className="menu-toggle absolute right-4 top-[max(0.75rem,env(safe-area-inset-top))] inline-flex size-11 items-center justify-center rounded-full border border-cream/40 bg-navy/30 text-cream backdrop-blur-sm md:hidden"
+          aria-label="Open menu"
+          onClick={() => setOpen(true)}
+        >
+          <Menu className="size-5" />
+        </button>
+      )}
       <div
         className={cn(
           "hidden h-9 items-center text-[0.6875rem] uppercase tracking-[0.16em] md:flex",
@@ -79,7 +89,7 @@ export function SiteHeader() {
         className={cn(
           "border-b transition-[background-color,border-color,backdrop-filter] duration-300",
           overlay
-            ? "border-transparent bg-transparent"
+            ? "max-md:hidden border-transparent bg-transparent"
             : "border-line/80 bg-paper/90 backdrop-blur-md",
         )}
       >
@@ -131,7 +141,7 @@ export function SiteHeader() {
             <button
               type="button"
               className={cn(
-                "inline-flex size-11 items-center justify-center rounded-full border lg:hidden",
+                "menu-toggle inline-flex size-11 items-center justify-center rounded-full border lg:hidden",
                 overlay ? "border-cream/30 text-cream" : "border-line text-ink",
               )}
               aria-label={open ? "Close menu" : "Open menu"}
@@ -149,23 +159,27 @@ export function SiteHeader() {
           open ? "block" : "hidden",
         )}
       >
-        <nav className="mx-auto flex max-w-7xl flex-col px-5 py-3">
+        <nav className="mx-auto flex max-w-7xl flex-col px-3 py-2">
           {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="flex h-12 items-center border-b border-line/70 text-base"
+              className="menu-row flex h-12 items-center justify-between rounded-md px-3 text-base"
               onClick={() => setOpen(false)}
             >
               {item.label}
+              <ArrowRight className="menu-row-mark size-4" aria-hidden />
             </Link>
           ))}
           <a
             href={`tel:${company.phoneTel}`}
-            className="flex h-12 items-center gap-2 text-base"
+            className="menu-row flex h-12 items-center justify-between rounded-md px-3 text-base"
           >
-            <Phone className="size-4" />
-            Call {company.phoneDisplay}
+            <span className="flex items-center gap-2">
+              <Phone className="size-4" />
+              Call {company.phoneDisplay}
+            </span>
+            <ArrowRight className="menu-row-mark size-4" aria-hidden />
           </a>
         </nav>
       </div>

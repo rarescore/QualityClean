@@ -32,12 +32,10 @@ export function Eyebrow({
   children,
   className,
   tone = "red",
-  as: Tag = "p",
 }: {
   children: ReactNode;
   className?: string;
   tone?: "red" | "cream" | "navy";
-  as?: "p" | "div" | "h1";
 }) {
   const color =
     tone === "cream"
@@ -46,7 +44,7 @@ export function Eyebrow({
         ? "text-navy"
         : "text-red";
   return (
-    <Tag
+    <p
       className={cn(
         "mb-3 flex items-center gap-2 text-[0.6875rem] font-medium uppercase tracking-[0.22em]",
         color,
@@ -55,7 +53,7 @@ export function Eyebrow({
     >
       <Sparkle className="size-3 shrink-0" />
       {children}
-    </Tag>
+    </p>
   );
 }
 
@@ -79,20 +77,20 @@ export function ClockLockup({
   const clockTone = tone === "cream" ? "cream" : "navy";
 
   return (
-    <div className="flex items-end gap-5 sm:gap-7">
+    <div className="flex items-end gap-4 sm:gap-7">
       <div className="flex flex-col items-center">
-        <AnalogClock hours={11} minutes={0} tone={clockTone} className="w-16 sm:w-20" />
-        <p className={cn("mt-2 font-sans text-lg font-light tabular-nums tracking-tight sm:text-xl", time)}>
+        <AnalogClock hours={11} minutes={0} tone={clockTone} className="w-12 sm:w-20" />
+        <p className={cn("mt-1 font-sans text-base font-light tabular-nums tracking-tight sm:mt-2 sm:text-xl", time)}>
           11:00
         </p>
         <p className={cn("mt-0.5 text-[0.625rem] uppercase tracking-[0.2em]", label)}>
           Check-out
         </p>
       </div>
-      <Bolt className="mb-10 h-8 w-4 text-red sm:mb-12 sm:h-9 sm:w-5" />
+      <Bolt className="mb-8 h-6 w-3 text-red sm:mb-12 sm:h-9 sm:w-5" />
       <div className="flex flex-col items-center">
-        <AnalogClock hours={3} minutes={0} windowProgress={1} tone={clockTone} className="w-16 sm:w-20" />
-        <p className={cn("mt-2 font-sans text-lg font-light tabular-nums tracking-tight sm:text-xl", time)}>
+        <AnalogClock hours={3} minutes={0} windowProgress={1} tone={clockTone} className="w-12 sm:w-20" />
+        <p className={cn("mt-1 font-sans text-base font-light tabular-nums tracking-tight sm:mt-2 sm:text-xl", time)}>
           3:00
         </p>
         <p className={cn("mt-0.5 text-[0.625rem] uppercase tracking-[0.2em]", label)}>

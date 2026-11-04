@@ -14,18 +14,15 @@ import { seoHead } from "@/lib/seo";
 import { webpSrcSet } from "@/lib/img";
 import {
   company,
-  areas,
   services,
   proofs,
-  hostTimeline,
   team,
   hostChecklist,
-  turnoverProduct,
   sellable,
   versus,
-  hostFails,
 } from "@/lib/company";
 import { coreLocations } from "@/lib/locations";
+import { marqueeItems } from "@/lib/strip-locations";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -35,7 +32,7 @@ export const Route = createFileRoute("/")({
       description:
         "Los Angeles Airbnb turnovers, residential and commercial cleaning. Check-out at 11. Guest-ready at 3. 25 years. 24/7. Sherman Oaks.",
       path: "/",
-      image: "/images/posters/hero-glass.webp",
+      image: "/images/posters/hero-clean.webp",
     });
     return {
       meta: base.meta,
@@ -43,24 +40,9 @@ export const Route = createFileRoute("/")({
         ...base.links,
         {
           rel: "preload",
-          href: "/images/posters/hero-glass-800.webp",
+          href: "/images/posters/hero-clean.webp",
           as: "image",
           type: "image/webp",
-          media: "(max-width: 768px)",
-        },
-        {
-          rel: "preload",
-          href: "/images/posters/hero-glass.webp",
-          as: "image",
-          type: "image/webp",
-          media: "(min-width: 769px)",
-        },
-        {
-          rel: "preload",
-          href: "/fonts/cormorant.woff2",
-          as: "font",
-          type: "font/woff2",
-          crossOrigin: "anonymous",
         },
         {
           rel: "preload",
@@ -77,50 +59,53 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <main className="pb-16 md:pb-0">
-      <section className="relative min-h-svh overflow-hidden bg-navy text-cream">
+      <section className="relative h-[100dvh] min-h-[100dvh] w-full overflow-hidden bg-navy font-sans text-cream max-md:-mt-[env(safe-area-inset-top)] max-md:h-[calc(100dvh+env(safe-area-inset-top))] max-md:min-h-[calc(100dvh+env(safe-area-inset-top))]">
         <CinematicVideo
-          src="/videos/hero-glass.mp4"
-          mobileSrc="/videos/hero-glass-sm.mp4"
-          poster="/images/posters/hero-glass.webp"
-          alt="Spotless floor-to-ceiling glass over a Los Angeles hillside pool"
+          src="/videos/hero-clean.mp4"
+          mobileSrc="/videos/hero-clean-phone.mp4"
+          poster="/images/posters/hero-clean.webp"
+          mobilePoster="/images/posters/hero-clean-phone.webp"
+          alt="Soap, a sink, then a guest-ready living room"
           priority
           className="absolute inset-0 size-full"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/55 to-navy/40" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy/70 to-transparent" />
-        <div className="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-end px-5 pb-16 pt-36 sm:px-8 md:pb-20">
-          <Eyebrow as="h1" tone="cream" className="rise-in">
-            House, Airbnb &amp; Office Cleaning in Sherman Oaks &amp; Los Angeles
-          </Eyebrow>
-          <p className="display-hero max-w-5xl text-cream">
-            Check-out at <span className="display-num">11</span>.
-            <br />
-            <em>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/35 via-transparent to-navy/75" />
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col px-5 pb-24 pt-[max(4.5rem,env(safe-area-inset-top))] sm:px-8 md:justify-end md:pb-20 md:pt-36">
+          <div>
+            <Eyebrow tone="cream" className="rise-in">
+              Los Angeles · Airbnb turnovers
+            </Eyebrow>
+            <h1 className="display-hero max-w-5xl font-sans text-cream max-md:!text-[2.7rem] max-md:!leading-[0.98]">
+              Check-out at <span className="display-num">11</span>.
+              <br />
               Guest-ready at <span className="display-num">3</span>.
-            </em>
-          </p>
-          <p className="rise-in-3 mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
-            You are not buying hours. You are buying the next review.
-            Hotel-standard turnovers for LA hosts — quoted in writing before we
-            start.
-          </p>
-          <div className="rise-in-4 mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex flex-wrap items-center gap-3">
-              <Magnetic>
-                <Button asChild size="xl">
-                  <Link to="/quote">
-                    Book a turnover
-                    <ArrowRight className="size-4" />
-                  </Link>
-                </Button>
-              </Magnetic>
-              <Button asChild size="xl" variant="invert">
-                <Link to="/airbnb">See the product</Link>
-              </Button>
-            </div>
-            <ClockLockup tone="cream" />
+            </h1>
+            <p className="rise-in-3 mt-3 max-w-xl text-sm leading-snug text-cream/85 sm:text-lg md:mt-6 md:leading-relaxed">
+              You are not buying hours. You are buying the next review.
+              Hotel-standard turnovers for LA hosts — quoted in writing before we
+              start.
+            </p>
           </div>
-          <dl className="mt-12 grid grid-cols-3 gap-6 border-t border-cream/15 pt-6 max-w-xl">
+          <div className="mt-auto md:mt-8">
+            <div className="rise-in-4 flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-8">
+              <div className="flex items-center gap-2">
+                <Magnetic>
+                  <Button asChild size="xl" className="max-md:h-12 max-md:flex-1 max-md:px-3">
+                    <Link to="/quote">
+                      Book a turnover
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  </Button>
+                </Magnetic>
+                <Button asChild size="xl" variant="invert" className="max-md:h-12 max-md:flex-1 max-md:px-3">
+                  <Link to="/services">What we do</Link>
+                </Button>
+              </div>
+              <div className="hidden md:block">
+                <ClockLockup tone="cream" />
+              </div>
+            </div>
+            <dl className="mt-4 grid grid-cols-3 gap-4 border-t border-cream/15 pt-3 max-w-xl md:mt-12 md:gap-6 md:pt-6">
             {[
               { k: <><CountUp to={25} /> yrs</>, v: "in Los Angeles" },
               { k: "24/7", v: "we pick up" },
@@ -132,27 +117,52 @@ function Home() {
               </div>
             ))}
           </dl>
+          </div>
         </div>
       </section>
 
       <div className="overflow-hidden border-b border-line bg-cream py-3">
         <div className="marquee-track flex w-max gap-10 pr-10 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-navy/70">
-          {[...areas, ...areas].map((a, i) => (
-            <span key={`${a}-${i}`} className="flex items-center gap-10">
-              {a}
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <span key={`${item.label}-${i}`} className="flex items-center gap-10">
+              {item.kind === "city" ? (
+                <Link to="/locations/$city" params={{ city: item.slug }}>
+                  {item.label}
+                </Link>
+              ) : (
+                item.label
+              )}
               <span className="spark-dot" aria-hidden />
             </span>
           ))}
         </div>
       </div>
 
-      <section className="bg-paper py-24 md:py-32">
+      <TheWindow />
+
+      <section className="border-b border-line bg-paper py-16 md:py-24" id="quote">
+        <div className="mx-auto max-w-3xl px-5 sm:px-8">
+          <Eyebrow>Quote</Eyebrow>
+          <h2 className="display-section">We’ll quote first.</h2>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted md:text-base">
+            No published rates. The number we stand behind is the one we give
+            before a crew is booked. Call if it is same-day — we pick up at
+            night.
+          </p>
+          <div className="mt-8 rounded-xl border border-line bg-cream p-4 shadow-card sm:p-8">
+            <QuoteForm variant="book" quickMobile />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-paper py-16 md:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="reveal max-w-3xl">
-            <Eyebrow>{turnoverProduct.kicker}</Eyebrow>
-            <h2 className="display-section">{turnoverProduct.name}.</h2>
+            <Eyebrow>The visit</Eyebrow>
+            <h2 className="display-section">What the crew leaves behind.</h2>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              {turnoverProduct.pitch}
+              Hotel corners, restock, a walkthrough, the door locked before the
+              new code is issued.
             </p>
           </div>
 
@@ -161,10 +171,8 @@ function Home() {
               <p className="text-[0.6875rem] uppercase tracking-[0.2em] text-cream/80">
                 Lead offer · Airbnb hosts
               </p>
-              <p className="mt-4 font-sans text-6xl font-light leading-none tracking-tight md:text-7xl">
-                <span className="tracking-[0.06em]">11:00</span>
-                <span className="mx-3 font-light text-red">→</span>
-                3:00
+              <p className="mt-4 max-w-md font-sans text-4xl font-light leading-tight tracking-tight md:text-5xl">
+                The checklist is the product.
               </p>
               <p className="mt-3 max-w-md text-sm text-cream/85">
                 The number, in writing, before a crew is booked. Senior and
@@ -216,52 +224,6 @@ function Home() {
                 </article>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-navy py-24 text-cream md:py-32">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="reveal max-w-3xl">
-            <Eyebrow tone="cream">Why hosts pay us</Eyebrow>
-            <h2 className="display-section">
-              Listings don’t lose stars on the square footage.
-            </h2>
-          </div>
-          <div className="mt-14 grid gap-px bg-cream/10 md:grid-cols-3">
-            {hostFails.map((item) => (
-              <article key={item.title} className="reveal bg-navy p-8">
-                <Sparkle className="size-4 text-red" />
-                <h3 className="mt-6 font-display text-3xl">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-cream/85">{item.text}</p>
-              </article>
-            ))}
-          </div>
-          <p className="reveal mt-12 max-w-2xl font-display text-2xl leading-snug md:text-3xl">
-            One 3-star review can cost a Superhost badge. A typical turnover is
-            less than a night’s rent. That is the product.
-          </p>
-        </div>
-      </section>
-
-      <TheWindow />
-
-      <section className="bg-cream py-24 md:py-32">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="reveal">
-            <Eyebrow>On the clock</Eyebrow>
-            <h2 className="display-section max-w-3xl">Four hours. One crew. No mystery.</h2>
-          </div>
-          <div className="mt-14 grid gap-px bg-line md:grid-cols-4">
-            {hostTimeline.map((step) => (
-              <article key={step.time} className="bg-cream p-6 md:p-8">
-                <p className="font-sans text-3xl font-light tabular-nums tracking-tight text-red md:text-4xl">
-                  {step.time}
-                </p>
-                <h3 className="mt-4 font-display text-2xl">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -319,7 +281,7 @@ function Home() {
             {services.map((svc, i) => (
               <Link
                 key={svc.slug}
-                to={svc.href}
+                to={svc.slug === "airbnb" ? "/airbnb" : "/services"}
                 className={
                   i === 0
                     ? "group relative min-h-80 overflow-hidden rounded-xl md:col-span-4 md:min-h-[28rem]"
@@ -349,23 +311,6 @@ function Home() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-line bg-paper py-24 md:py-32" id="quote">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="reveal">
-            <Eyebrow>Buy it</Eyebrow>
-            <h2 className="display-section max-w-3xl">Tell us the rooms. We’ll quote first.</h2>
-            <p className="mt-5 max-w-xl text-muted">
-              No published rates. The number we stand behind is the one we give
-              before a crew is booked. Call if it is same-day — we pick up at
-              night.
-            </p>
-          </div>
-          <div className="mt-12 rounded-xl border border-line bg-cream p-5 shadow-card sm:p-10">
-            <QuoteForm />
           </div>
         </div>
       </section>

@@ -32,7 +32,7 @@ export const articleMeta: ArticleMeta[] = [
       "why-is-my-house-so-dusty-los-angeles",
     ],
     minutes: 9,
-    serviceTo: "/services/house-cleaning",
+    serviceTo: "/services#residential",
     serviceLabel: "House cleaning",
   },
   {
@@ -52,7 +52,7 @@ export const articleMeta: ArticleMeta[] = [
       "how-often-should-you-clean-your-house",
     ],
     minutes: 7,
-    serviceTo: "/services/deep-cleaning",
+    serviceTo: "/services#deep",
     serviceLabel: "Deep cleaning",
   },
   {
@@ -72,7 +72,7 @@ export const articleMeta: ArticleMeta[] = [
       "house-cleaning-cost-los-angeles",
     ],
     minutes: 6,
-    serviceTo: "/services/deep-cleaning",
+    serviceTo: "/services#deep",
     serviceLabel: "Move-out cleaning",
   },
   {
@@ -112,7 +112,7 @@ export const articleMeta: ArticleMeta[] = [
       "hard-water-stains-windows-los-angeles",
     ],
     minutes: 7,
-    serviceTo: "/services/deep-cleaning",
+    serviceTo: "/services#deep",
     serviceLabel: "Deep cleaning",
   },
   {
@@ -132,7 +132,7 @@ export const articleMeta: ArticleMeta[] = [
       "how-often-should-you-clean-your-house",
     ],
     minutes: 7,
-    serviceTo: "/services/carpet-cleaning",
+    serviceTo: "/services#carpet",
     serviceLabel: "Carpet & pet odor",
   },
   {
@@ -152,7 +152,7 @@ export const articleMeta: ArticleMeta[] = [
       "los-angeles-house-cleaning-checklist",
     ],
     minutes: 6,
-    serviceTo: "/services/window-cleaning",
+    serviceTo: "/services#windows",
     serviceLabel: "Window cleaning",
   },
   {
@@ -172,7 +172,7 @@ export const articleMeta: ArticleMeta[] = [
       "house-cleaning-cost-los-angeles",
     ],
     minutes: 6,
-    serviceTo: "/services/office-cleaning",
+    serviceTo: "/services#commercial",
     serviceLabel: "Office cleaning",
   },
   {
@@ -192,7 +192,7 @@ export const articleMeta: ArticleMeta[] = [
       "los-angeles-move-out-cleaning-checklist",
     ],
     minutes: 6,
-    serviceTo: "/services/deep-cleaning",
+    serviceTo: "/services#deep",
     serviceLabel: "Post-construction cleaning",
   },
   {
@@ -212,7 +212,7 @@ export const articleMeta: ArticleMeta[] = [
       "why-is-my-house-so-dusty-los-angeles",
     ],
     minutes: 10,
-    serviceTo: "/services/house-cleaning",
+    serviceTo: "/services#residential",
     serviceLabel: "Recurring house cleaning",
   },
 ];

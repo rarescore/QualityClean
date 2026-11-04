@@ -9,6 +9,7 @@ type Props = {
   alt?: string;
   priority?: boolean;
   mobileSrc?: string;
+  mobilePoster?: string;
 };
 
 export function CinematicVideo({
@@ -18,43 +19,59 @@ export function CinematicVideo({
   alt = "",
   priority = false,
   mobileSrc,
+  mobilePoster,
 }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
   const poster800 = webp800(poster);
+  const phoneStill = mobilePoster ?? poster;
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || priority) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nav = navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string };
+      connection?: { saveData?: boolean };
     };
     if (reduce || nav.connection?.saveData) return;
-    const mobile = window.matchMedia("(max-width: 768px)").matches;
-    const pick = mobileSrc && mobile ? mobileSrc : src;
+
+    let started = false;
     const start = () => {
-      if (el.getAttribute("src") !== pick) {
-        el.src = pick;
-      }
+      if (started) return;
+      started = true;
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+      el.src = mobile && mobileSrc ? mobileSrc : src;
       el.play().catch(() => {});
     };
-    const wait = priority ? (mobile ? 2800 : 900) : mobile ? 5000 : 1800;
-    const t = window.setTimeout(start, wait);
-    return () => window.clearTimeout(t);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          start();
+          io.disconnect();
+        }
+      },
+      { rootMargin: "240px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, [src, mobileSrc, priority]);
 
   return (
     <div className={cn("relative overflow-hidden bg-navy", className)}>
       <picture>
-        <source media="(max-width: 767px)" srcSet={poster800} type="image/webp" />
+        {mobilePoster ? (
+          <source media="(max-width: 767px)" srcSet={phoneStill} type="image/webp" />
+        ) : (
+          <source media="(max-width: 767px)" srcSet={poster800} type="image/webp" />
+        )}
         <source media="(min-width: 768px)" srcSet={poster} type="image/webp" />
         <img
-          src={poster800}
+          src={priority && mobilePoster ? phoneStill : poster800}
           alt={alt}
-          width={1280}
-          height={720}
+          width={1216}
+          height={2160}
           className="absolute inset-0 size-full object-cover"
-          fetchPriority={priority ? "high" : "auto"}
+          fetchPriority={priority ? "high" : "low"}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
         />
@@ -65,10 +82,16 @@ export function CinematicVideo({
         muted
         loop
         playsInline
-        preload="none"
-        poster={poster800}
+        autoPlay={priority}
+        preload={priority ? "auto" : "none"}
+        poster={priority ? phoneStill : undefined}
         aria-hidden="true"
-      />
+      >
+        {priority && mobileSrc ? (
+          <source src={mobileSrc} media="(max-width: 767px)" type="video/mp4" />
+        ) : null}
+        {priority ? <source src={src} type="video/mp4" /> : null}
+      </video>
     </div>
   );
 }
